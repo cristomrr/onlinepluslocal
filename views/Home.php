@@ -42,8 +42,7 @@ class Home
    */
   public function __construct()
   {
-    // $imgGirl = new ImgGirl('¡Bienvenid@ a OnlinePlusLocal!');
-    $imgGirl = new ImgGirl('Proyecto aún en desarrollo');
+    $imgGirl = new ImgGirl('¡Bienvenid@ a OnlinePlusLocal!');
 
     // Sección con la imagen de la chica como bienvenida
     $this->code = '<section class="home-girl">' . $imgGirl->getCode() . '</section>';
