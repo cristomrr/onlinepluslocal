@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *  En este archivo utilizaremos un Switch para probar las páginas del sitio y agregarles los estilos.
+ *  En el primer Sprint se crea la parte visual al considerarse de mayor prioridad, porque para el
+ *  cliente es de mayor valor el ver como va quedando el sitio y si cumple con sus requerimientos.
+ */
+
 require_once './views/component/Head.php';
 require_once './views/component/Header.php';
 require_once './views/component/Footer.php';
@@ -21,17 +27,21 @@ const URL_SERVER = './server.php';
 
 // TODO: Temporal para probar las páginas, cuando se haga la parte del servidor lo hará el controller
 
-$head = new Head();
-$footer = new Footer();
 
 $page = (isset($_GET['page']))
   ? $_GET['page']
   : '';
 
-
+/**
+ * Crea e imprime en el navegador la página agregando las vistas pasadas por parámetro al documento
+ *
+ * @param Head $head Contenido del Head
+ * @param Header $header Cabecera de la página (Header)
+ * @param string $content Contenido de la página (Main)
+ * @param Footer $footer contenido del pie de página (Footer)
+ */
 function setPage(Head $head, Header $header, string $content, Footer $footer)
 {
-
   $doc = '<!DOCTYPE html>
             <html lang="es">
               ' . $head->getCode() . '
@@ -47,10 +57,10 @@ function setPage(Head $head, Header $header, string $content, Footer $footer)
   echo $doc;
 }
 
+$head = new Head();
+$footer = new Footer();
 
 switch ($page) {
-
-
 
   case 'perfil-vendedor':
     $header = new Header(['search', 'favorite', 'seller', 'logout']);
@@ -64,10 +74,9 @@ switch ($page) {
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;
 
-
   case 'favoritos':
     $header = new Header(['search','favorite', 'seller', 'buyer', 'logout']);
-    $viewUserdata = new Favorite(URL_SERVER);
+    $viewUserdata = new Favorite();
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;
 

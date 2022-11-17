@@ -5,11 +5,16 @@ class Userdata
   private string $code;
 
   /**
-   * 
+   * Campos del apartado de subida de nuevos productos al servidor
    */
   private const INPUT_ARTICLE = [
     ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
-    ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"]
+    ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"],
+    [
+      "id" => "upfile",
+      "label" => "Escoge una imagen JPG o PNG para el artículo (Tamaño máximo 200Kb):",
+      "options" => "image/png, image/jpeg", "component" => "file"
+    ],
   ];
 
   /**
@@ -63,7 +68,13 @@ class Userdata
     return $code;
   }
 
-  private function getUpArticle($urlServer): string
+  /**
+   * Formulario con los campos necesarios para subir un nuevo artúculo al servidor
+   *
+   * @param string $urlServer Ruta del archivo del servidor al que se envía el formulario
+   * @return string Código HTML con el formulario para ser agregado al documento
+   */
+  private function getUpArticle(string $urlServer): string
   {
     $form = new Form(
       [
@@ -84,7 +95,14 @@ class Userdata
     return $form->getCode();
   }
 
-  private function getUserdata($urlServer, $user): string
+  /**
+   * Formulario con los datos del usuario, para la visualización o edición
+   *
+   * @param string $urlServer Ruta del archivo del servidor al que se envía el formulario
+   * @param string $user Indica el tipo de formulario a cargar (Cliente o Vendedor)
+   * @return string Código HTML con el formulario para ser agregado al documento
+   */
+  private function getUserdata(string $urlServer, string $user): string
   {
     $input = self::INPUT_USERDATA['common'];
     if ($user === 'seller') {

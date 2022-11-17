@@ -23,7 +23,7 @@ class Form
    *              (string) component: Tipo de etiqueta (input, textarea)
    *              (string) id: Identificador de la etiqueta del campo y del la etiqueta label asociada 
    *              (string) label: Texto de la etiqueta label asociada
-   *              (string) type: Tipo de campo (text, password, email,...) (necesario si component == input)
+   *              (string) type: Tipo de campo (text, password, email,...) (necesario si es input no tipo file)
    *              (array) options: Opciones si las hubiese (opcional)
    * @param array $btnSubmit 
    *              (string) text: Texto del botón de envío del formulario
@@ -43,6 +43,9 @@ class Form
     $this->code .= '<input type="text" name="formname" id="formname" class="display-none" value="' . $form["name"] . '"/>';
     foreach ($inputs as $input) {
       switch ($input['component']) {
+        case 'file':
+          $this->code .= self::getInputFile($input['id'], $input['label'], $input['options']);
+          break;
         case 'input':
           $this->code .= self::getInput($input['id'], $input['label'], $input['type']);
           break;
@@ -57,9 +60,19 @@ class Form
     $this->code .= '</form>';
   }
 
+  private function getInputFile(string $id, string $label, string $options): string
+  {
+    return '<label for="' . $id . '">' . $label . '
+              <input type="file"
+                id="' . $id . '"
+                name="' . $id . '"
+                accept="' . $options . '">
+            </label>';
+  }
+
 
   /**
-   * Crea el código HTML de un campo de formulario.
+   * Crea el código HTML de un campo de entrada de texto del formulario.
    *
    * @param string $id Nombre identificador del campo de formulario
    * @param string $label Nombre del campo que será visualizado por el usuario
