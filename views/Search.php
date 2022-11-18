@@ -20,9 +20,9 @@ class Search
    * Construcción de la vista Búsqueda
    * 
    * @param string $urlServer Ruta al archivo del servidor al que se le enviará los formularios
-   * 
+   * @param array $articles Colección con los favoritos del usuario   * 
    */
-  public function __construct($urlServer)
+  public function __construct(string $urlServer, array $articles)
   {
     $imgGirl = new ImgGirl('¡Nos vamos de compras!');
 
@@ -35,21 +35,26 @@ class Search
               <div class="form-search">
                 ' . self::getForm($urlServer) . '
               </div>
-            </section>
-            
-            <section class="result-search">
+            </section>';
+
+    $this->code .= '<section class="result-search">
               <h4 class="global-title-plane">Resultados:</h4>
-              <div class="articles">
+              <div class="articles">';
 
-              ' . Article::getPreview('1', './assets/img-product/short1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', false) . '
+    foreach ($articles as $k => $v) {
+      $this->code .= Article::getPreview(
+        $v['id'],
+        $v['img'],
+        $v['name'],
+        $v['shop'],
+        $v['description'],
+        $v['price'],
+        false
+      );
+    }
 
-              ' . Article::getPreview('2', './assets/img-product/hair1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', false) . '
 
-              ' . Article::getPreview('3', './assets/img-product/shirt1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', false) . '
-
-              ' . Article::getPreview('4', './assets/img-product/shirt2.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', false) . '
-              
-              </div>
+    $this->code .= '</div>
             </section>';
   }
 
@@ -93,3 +98,17 @@ class Search
     return $this->code;
   }
 }
+
+
+/*!SECTION
+
+' . Article::getPreview('1', './assets/test/img-product/2/short1.png','pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+
+              ' . Article::getPreview('2', './assets/test/img-product/2/hair1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+
+              ' . Article::getPreview('3', './assets/test/img-product/1/shirt1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+
+              ' . Article::getPreview('4', './assets/test/img-product/1/shirt2.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+
+
+*/

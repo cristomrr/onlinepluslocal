@@ -1,11 +1,10 @@
 <?php
-// TODO: por terminar
+
 class Article
 {
   public static function getPreview(
     string $id,
     string $img,
-    string $altImg,
     string $title,
     string $shop,
     string $description,
@@ -14,7 +13,7 @@ class Article
   ): string {
     $article = '<div class="card">
                         <picture id="' . $id . '">
-                            <img src="' . $img . '" alt="' . $altImg . '" />
+                            <img src="' . $img . '" alt="Imagen del producto" />
                         </picture>
                         <div class="info-card">
                             <p><span class="title">Producto: </span>' . $title . '</p>

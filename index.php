@@ -25,6 +25,9 @@ require_once './views/component/Article.php';
 
 const URL_SERVER = './server.php';
 
+$data_tmp = file_get_contents('./assets/test/data-product/articles_testing.json');
+$products = json_decode($data_tmp, true);
+
 // TODO: Temporal para probar las páginas, cuando se haga la parte del servidor lo hará el controller
 
 
@@ -69,20 +72,20 @@ switch ($page) {
     break;
 
   case 'perfil-cliente':
-    $header = new Header(['search','favorite', 'buyer', 'logout']);
+    $header = new Header(['search', 'favorite', 'buyer', 'logout']);
     $viewUserdata = new Userdata(URL_SERVER, 'buyer', 'Cristo');
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;
 
   case 'favoritos':
-    $header = new Header(['search','favorite', 'seller', 'buyer', 'logout']);
-    $viewUserdata = new Favorite();
+    $header = new Header(['search', 'favorite', 'seller', 'buyer', 'logout']);
+    $viewUserdata = new Favorite($products);
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;
 
   case 'buscador':
-    $header = new Header(['search','favorite', 'seller', 'buyer', 'logout']);
-    $viewUserdata = new Search(URL_SERVER);
+    $header = new Header(['search', 'favorite', 'seller', 'buyer', 'logout']);
+    $viewUserdata = new Search(URL_SERVER, $products);
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;
 
@@ -99,7 +102,7 @@ switch ($page) {
     break;
 
   case 'contacto':
-    $header = new Header(['search','favorite', 'login', 'logout', 'seller', 'buyer']);
+    $header = new Header(['search', 'favorite', 'login', 'logout', 'seller', 'buyer']);
     $viewUserdata = new Contact(URL_SERVER);
     setPage($head, $header, $viewUserdata->getCode(), $footer);
     break;

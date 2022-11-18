@@ -11,8 +11,10 @@ class Favorite
 
   /**
    * Construcción de la vista Búsqueda
+   * 
+   * @param array $articles Colección con los favoritos del usuario
    */
-  public function __construct()
+  public function __construct(array $articles = [])
   {
     $imgGirl = new ImgGirl('¡Ohh! que cosas te gustan');
 
@@ -28,13 +30,13 @@ class Favorite
               <h4 class="global-title-plane">4 artículos favoritos:</h4>
               <div class="articles">
 
-              ' . Article::getPreview('1', './assets/img-product/short1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+              ' . Article::getPreview('1', './assets/test/img-product/2/short1.png','pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
 
-              ' . Article::getPreview('2', './assets/img-product/hair1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+              ' . Article::getPreview('2', './assets/test/img-product/2/hair1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
 
-              ' . Article::getPreview('3', './assets/img-product/shirt1.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+              ' . Article::getPreview('3', './assets/test/img-product/1/shirt1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
 
-              ' . Article::getPreview('4', './assets/img-product/shirt2.png', 'imagen producto', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+              ' . Article::getPreview('4', './assets/test/img-product/1/shirt2.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
               
               </div>
             </section>';
