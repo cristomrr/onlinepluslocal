@@ -25,7 +25,7 @@ require_once './views/component/Article.php';
 
 const URL_SERVER = './server.php';
 
-$data_tmp = file_get_contents('./assets/test/data-product/articles_testing.json');
+$data_tmp = file_get_contents('./test/data-product/articles_testing.json');
 $products = json_decode($data_tmp, true);
 
 // TODO: Temporal para probar las páginas, cuando se haga la parte del servidor lo hará el controller
