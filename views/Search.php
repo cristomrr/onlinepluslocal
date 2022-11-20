@@ -7,6 +7,11 @@
  */
 class Search
 {
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
 
   private const INPUTS_SEARCH = [
@@ -22,7 +27,7 @@ class Search
    * @param string $urlServer Ruta al archivo del servidor al que se le enviará los formularios
    * @param array $articles Colección con los favoritos del usuario   * 
    */
-  public function __construct(string $urlServer, array $articles)
+  public function __construct(string $urlServer, array $articles = [])
   {
     $imgGirl = new ImgGirl('¡Nos vamos de compras!');
 

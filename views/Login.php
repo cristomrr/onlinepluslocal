@@ -8,9 +8,14 @@
 class Login
 {
 
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
-  private const URL_PAGE_SIGNUP_BUYER = './?page=signupb';
-  private const URL_PAGE_SIGNUP_SELLER = './?page=signups';
+  private const URL_PAGE_SIGNUP_BUYER = 'registro-cliente';
+  private const URL_PAGE_SIGNUP_SELLER = 'registro-vendedor';
   private const INPUTS_FORM = [
     ["id" => "email", "label" => " Correo electrónico:", "type" => "email", "component" => "input"],
     ["id" => "password", "label" => " Contraseña:", "type" => "password", "component" => "input"],
@@ -31,9 +36,9 @@ class Login
               <p>¿No tienes una cuenta?</p>
 
               <div class="login-btn">
-                <a href="' . self::URL_PAGE_SIGNUP_BUYER . '">Crear cuenta de usuario</a>
+                <a href="/?page=' . self::URL_PAGE_SIGNUP_BUYER . '">Crear cuenta de usuario</a>
                 <p>ó</p>
-                <a href="' . self::URL_PAGE_SIGNUP_SELLER . '">Crear cuenta de empresa</a>
+                <a href="/?page=' . self::URL_PAGE_SIGNUP_SELLER . '">Crear cuenta de empresa</a>
               </div>
             </section>';
   }

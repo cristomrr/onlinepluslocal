@@ -7,6 +7,12 @@
  */
 class Contact
 {
+   /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
+  private string $code;
   private const PHONE = '922999999';
   private const MAIL = 'info@onlinepluslocal.com';
   private  const ADDRESS = 'Calle los Angeles 25, 38690 Puerto Santiago';
@@ -17,7 +23,6 @@ class Contact
     ["id" => "msg", "label" => " Mensaje:", "options" => ["cols" => "30", "rows" => "10"], "component" => "textarea"]
   ];
 
-  private string $code;
 
   /**
    * Constructor del contenido del la página Contacto

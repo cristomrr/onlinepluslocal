@@ -7,6 +7,11 @@
  */
 class ImgGirl
 {
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
   public const IMG_GIRL = './assets/img/girl.png';
 

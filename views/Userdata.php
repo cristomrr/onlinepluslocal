@@ -2,12 +2,17 @@
 
 class Userdata
 {
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
 
   /**
    * Campos del apartado de subida de nuevos productos al servidor
    */
-  private const INPUT_ARTICLE = [
+  private const INPUTS_ARTICLE = [
     ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
     ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"],
     [
@@ -21,7 +26,7 @@ class Userdata
    * Campos comunes de los registros Cliente y Vendedor y específicos de cada uno.
    * Se utilizarán para la edición de los campos de entrada en la página correspondiente
    */
-  private const INPUT_USERDATA = [
+  private const INPUTS_USERDATA = [
     "buyer" => [
       ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
       ["id" => "surname", "label" => " Apellidos:", "type" => "text", "component" => "input"],
@@ -61,12 +66,20 @@ class Userdata
     $this->code .= '</section>';
   }
 
-  public function getGreeting($username): string
+
+  /**
+   * Undocumented function
+   *
+   * @param string $username
+   * @return string
+   */
+  public function getGreeting(string $username): string
   {
     $code = '<h4 class="greeting">Bienvenido ' . $username . '</h4>';
 
     return $code;
   }
+
 
   /**
    * Formulario con los campos necesarios para subir un nuevo artúculo al servidor
@@ -84,7 +97,7 @@ class Userdata
         'method' => 'POST',
         'fieldset' => true
       ],
-      self::INPUT_ARTICLE,
+      self::INPUTS_ARTICLE,
       [
         'text' => 'Publicar',
         'icon' => 'chevron_right'
@@ -95,6 +108,7 @@ class Userdata
     return $form->getCode();
   }
 
+
   /**
    * Formulario con los datos del usuario, para la visualización o edición
    *
@@ -104,11 +118,11 @@ class Userdata
    */
   private function getUserdata(string $urlServer, string $user): string
   {
-    $input = self::INPUT_USERDATA['common'];
+    $input = self::INPUTS_USERDATA['common'];
     if ($user === 'seller') {
-      $input = array_merge(self::INPUT_USERDATA['seller'], $input);
+      $input = array_merge(self::INPUTS_USERDATA['seller'], $input);
     } elseif ($user === 'buyer') {
-      $input = array_merge(self::INPUT_USERDATA['buyer'], $input);
+      $input = array_merge(self::INPUTS_USERDATA['buyer'], $input);
     }
 
     $form = new Form(
@@ -129,6 +143,7 @@ class Userdata
 
     return $form->getCode();
   }
+
 
   /**
    * Devuelve el contenido HTML del la página perfil

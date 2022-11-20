@@ -1,7 +1,24 @@
 <?php
 
+/**
+ * Clase encargada de las vistas de los artículos
+ * @author Cristo Manuel Rodríguez Rodríguez
+ * @version 1.0.0
+ */
 class Article
 {
+  /**
+   * Contiene la vista previa del artículo, para los resultados de búsqueda o favoritos
+   *
+   * @param string $id Identificador del artículo para ser localizado en la base de datos
+   * @param string $img Imagen del artículo
+   * @param string $title Nombre descriptivo del artículo
+   * @param string $shop Tienda que lo vende
+   * @param string $description Descripción del artículo
+   * @param string $price Precio del artículo
+   * @param boolean $isLike Indica si lo tiene en favoritos el usuario que hizo la consulta
+   * @return string código HTML con el preview del artículo
+   */
   public static function getPreview(
     string $id,
     string $img,

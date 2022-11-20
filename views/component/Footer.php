@@ -7,9 +7,16 @@
  */
 class Footer
 {
-  public const URL_CONTACT = './?page=contact';
-  public const URL_PRIVACY = './';
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
+  public const URL_CONTACT = 'contacto';
+  public const URL_PRIVACY = './';
+
+
 
   /**
    * Constructor para la creación del componente Footer
@@ -21,7 +28,7 @@ class Footer
   {
     $this->code = '<footer>
                     <div class="link">
-                      <a href="' . self::URL_CONTACT . '">Contacto</a>
+                      <a href="/?page=' . self::URL_CONTACT . '">Contacto</a>
                       <a href="' . self::URL_PRIVACY . '">Privacidad</a>
                       <a href="' . './ ' . '">Cookies</a>
                     </div>

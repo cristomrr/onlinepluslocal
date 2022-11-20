@@ -7,6 +7,11 @@
  */
 class Favorite
 {
+  /**
+   * Almacena el código de la vista o componente de clase
+   *
+   * @var string código HTML de la vista o componente de clase
+   */
   private string $code;
 
   /**
@@ -21,25 +26,29 @@ class Favorite
     //TODO: Código de artículos para pruebas, eliminar cuando se trabaje con la DB (línea 40-46)
 
     $this->code = '<section class="search">
-              <div class="girl">
-                ' . $imgGirl->getCode() . '
-              </div>
-            </section>
-            
-            <section class="result-search">
-              <h4 class="global-title-plane">4 artículos favoritos:</h4>
-              <div class="articles">
+                    <div class="girl">
+                      ' . $imgGirl->getCode() . '
+                    </div>
+                  </section>';
 
-              ' . Article::getPreview('1', './assets/test/img-product/2/short1.png','pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+    $this->code .= '<section class="result-search">
+                      <h4 class="global-title-plane">4 artículos favoritos:</h4>
+                      <div class="articles">';
 
-              ' . Article::getPreview('2', './assets/test/img-product/2/hair1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
+    foreach ($articles as $k => $v) {
+      $this->code .= Article::getPreview(
+        $v['id'],
+        $v['img'],
+        $v['name'],
+        $v['shop'],
+        $v['description'],
+        $v['price'],
+        false
+      );
+    }
 
-              ' . Article::getPreview('3', './assets/test/img-product/1/shirt1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-
-              ' . Article::getPreview('4', './assets/test/img-product/1/shirt2.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-              
-              </div>
-            </section>';
+    $this->code .= '</div>
+                  </section>';
   }
 
 
