@@ -36,7 +36,7 @@ class Login
               <p>¿No tienes una cuenta?</p>
 
               <div class="login-btn">
-                <a href="/?page=' . self::URL_PAGE_SIGNUP_BUYER . '">Crear cuenta de usuario</a>
+                <a href="/?page=' . self::URL_PAGE_SIGNUP_BUYER . '">Crear cuenta de cliente</a>
                 <p>ó</p>
                 <a href="/?page=' . self::URL_PAGE_SIGNUP_SELLER . '">Crear cuenta de empresa</a>
               </div>
