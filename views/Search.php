@@ -31,8 +31,6 @@ class Search
   {
     $imgGirl = new ImgGirl('¡Nos vamos de compras!');
 
-    //TODO: Código de artículos para pruebas, eliminar cuando se trabaje con la DB (línea 40-46)
-
     $this->code = '<section class="search">
               <div class="girl">
                 ' . $imgGirl->getCode() . '
@@ -57,7 +55,6 @@ class Search
         false
       );
     }
-
 
     $this->code .= '</div>
             </section>';
@@ -103,17 +100,3 @@ class Search
     return $this->code;
   }
 }
-
-
-/*!SECTION
-
-' . Article::getPreview('1', './assets/test/img-product/2/short1.png','pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-
-              ' . Article::getPreview('2', './assets/test/img-product/2/hair1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-
-              ' . Article::getPreview('3', './assets/test/img-product/1/shirt1.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-
-              ' . Article::getPreview('4', './assets/test/img-product/1/shirt2.png', 'pantalón corto', 'Tienda de ejemplo', 'description del producto...', '45$', true) . '
-
-
-*/

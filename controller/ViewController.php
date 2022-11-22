@@ -29,10 +29,10 @@ class ViewController
   /**
    * Crea e imprime en el navegador la página agregando las vistas pasadas por parámetro al documento
    *
-   * @param Header $header Cabecera de la página (Header)
+   * @param string $header Cabecera de la página (Header)
    * @param string $content Contenido de la página (Main)
    */
-  private function setPage(Header $header, string $content)
+  private function setPage(string $header, string $content)
   {
     $head = new Head();
     $footer = new Footer();
@@ -41,7 +41,7 @@ class ViewController
             <html lang="es">
               ' . $head->getCode() . '
               <body>
-                ' . $header->getCode() . '
+                ' . $header . '
                 <main class="content-body">
                   ' . $content . '
                 </main>
@@ -60,15 +60,15 @@ class ViewController
    */
   public function printView(string $page)
   {
-    $user = 'buyer';
+    $user = 'seller';
 
     match ($page) {
-      'perfil-vendedor' => $this->viewUserdataSeller($user),
-      'perfil-cliente' => $this->viewUserdataBuyer($user),
+      'perfil-vendedor' => $this->viewUserdataSeller(),
+      'perfil-cliente' => $this->viewUserdataBuyer(),
       'favoritos' => $this->viewFavorite($user),
       'buscador' => $this->viewSearch($user),
-      'registro-cliente' => $this->viewSignupBuyer($user),
-      'registro-vendedor' => $this->viewSignupSeller($user),
+      'registro-cliente' => $this->viewSignupBuyer(),
+      'registro-vendedor' => $this->viewSignupSeller(),
       'contacto' => $this->viewContact($user),
       'login', 'out-session' => $this->viewLogin($user),
       default =>
@@ -84,7 +84,7 @@ class ViewController
   {
     $header = new Header(['search', 'favorite', 'logout']);
     $viewUserdataSeller = new Userdata(self::URL_SERVER, 'seller', 'CMRR Soluciones');
-    $this->setPage($header, $viewUserdataSeller->getCode());
+    $this->setPage($header->getCode(), $viewUserdataSeller->getCode());
   }
 
 
@@ -95,7 +95,7 @@ class ViewController
   {
     $header = new Header(['search', 'favorite', 'logout']);
     $viewUserdataBuyer = new Userdata(self::URL_SERVER, 'buyer', 'Cristo');
-    $this->setPage($header, $viewUserdataBuyer->getCode());
+    $this->setPage($header->getCode(), $viewUserdataBuyer->getCode());
   }
 
 
@@ -106,12 +106,13 @@ class ViewController
    */
   private function viewFavorite($user)
   {
+    // TODO: datos de ejemplo para ver el resultado visual
     $data_tmp = file_get_contents('./test/data-product/articles_testing.json');
     $products = json_decode($data_tmp, true);
 
     $header = new Header(['search', $user, 'logout']);
     $viewFavorite = new Favorite($products);
-    $this->setPage($header, $viewFavorite->getCode());
+    $this->setPage($header->getCode(), $viewFavorite->getCode());
   }
 
 
@@ -122,12 +123,13 @@ class ViewController
    */
   private function viewSearch($user)
   {
+    // TODO: datos de ejemplo para ver el resultado visual
     $data_tmp = file_get_contents('./test/data-product/articles_testing.json');
     $products = json_decode($data_tmp, true);
 
     $header =   new Header(['favorite', $user, 'logout']);
     $viewSearch = new Search(self::URL_SERVER, $products);
-    $this->setPage($header, $viewSearch->getCode());
+    $this->setPage($header->getCode(), $viewSearch->getCode());
   }
 
 
@@ -138,7 +140,7 @@ class ViewController
   {
     $header =   new Header(['login']);
     $viewSignupBuyer = new Signup(self::URL_SERVER, 'buyer');
-    $this->setPage($header, $viewSignupBuyer->getCode());
+    $this->setPage($header->getCode(), $viewSignupBuyer->getCode());
   }
 
 
@@ -149,7 +151,7 @@ class ViewController
   {
     $header = new Header(['login']);
     $viewSignupSeller = new Signup(self::URL_SERVER, 'seller');
-    $this->setPage($header, $viewSignupSeller->getCode());
+    $this->setPage($header->getCode(), $viewSignupSeller->getCode());
   }
 
 
@@ -160,7 +162,7 @@ class ViewController
   {
     $header =  new Header(['search', 'favorite', $user, 'logout']);
     $viewContact = new Contact(self::URL_SERVER);
-    $this->setPage($header, $viewContact->getCode());
+    $this->setPage($header->getCode(), $viewContact->getCode());
   }
 
 
@@ -171,7 +173,7 @@ class ViewController
   {
     $header = new Header(['search', 'favorite', $user, 'logout']);
     $viewLogin = new Login(self::URL_SERVER);
-    $this->setPage($header, $viewLogin->getCode());
+    $this->setPage($header->getCode(), $viewLogin->getCode());
   }
 
 
@@ -182,6 +184,6 @@ class ViewController
   {
     $header = new Header(['login']);
     $viewHome = new Home();
-    $this->setPage($header, $viewHome->getCode());
+    $this->setPage($header->getCode(), $viewHome->getCode());
   }
 }
