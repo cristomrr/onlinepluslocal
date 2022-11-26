@@ -5,14 +5,8 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Contact
+class Contact extends ViewComponent
 {
-   /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
   private const PHONE = '922999999';
   private const MAIL = 'info@onlinepluslocal.com';
   private  const ADDRESS = 'Calle los Angeles 25, 38690 Puerto Santiago';
@@ -27,11 +21,11 @@ class Contact
   /**
    * Constructor del contenido del la página Contacto
    *
-   * @param string $urlServer Ruta al archivo del servidor al que se le enviará los formularios
+   * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
    */
-  public function __construct($urlServer)
+  public function __construct(array $url)
   {
-    $this->code = '<section class="contact-section">
+    $code = '<section class="contact-section">
                       <div class="info-section">
                         <div class="info">
                           <h2 class="global-title">¿Dónde estamos?</h2>
@@ -45,10 +39,12 @@ class Contact
                       </div>
                       <div class="form-box">
                         <div class="form-content">
-                          ' . $this->getForm($urlServer) . '
+                          ' . $this->getForm($url['server']) . '
                         </div>
                       </div>
                     </section>';
+
+    parent::__construct($code);
   }
 
 
@@ -112,16 +108,5 @@ class Contact
     );
 
     return $form->getCode();
-  }
-
-
-  /**
-   * Devuelve el contenido HTML del la página contacto
-   *
-   * @return string Código HTML de la página Contacto para ser insertado
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

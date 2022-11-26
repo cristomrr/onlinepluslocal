@@ -5,20 +5,12 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Signup
+class Signup extends ViewComponent
 {
-
-   /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-
   /**
    * Título del formulario según si el registro es de Clientes o Vendedores
    */
-  private const TITLE = ["buyer" => "clientes", "seller" => "vendedores"];
+  private const TITLE = ["buyer" => "Registro clientes", "seller" => "Registro vendedores"];
 
   /**
    * Campos comunes de los registros Cliente y Vendedor y específicos de cada uno.
@@ -46,17 +38,6 @@ class Signup
   ];
 
   /**
-   * Datos para la creación de los enlaces que llevan al registro opuesto del documento actual
-   * (Cliente -> Vendedor ó Vendedor -> Cliente)
-   */
-  private const INFO = [
-    "buyer" =>
-    ["title" => "¿Eres vendedor?...", "label" => "Regístrate aquí como empresa", "href" => "/?page=signups"],
-    "seller" =>
-    ["title" => "¿Eres cliente?...", "label" => "Regístrate aquí como cliente", "href" => "/?page=signupb"],
-  ];
-
-  /**
    * Texto informativo importante para el usuario, dependiendo del tipo de registro
    */
   private const WARNING = [
@@ -74,22 +55,24 @@ class Signup
   /**
    * Crea el código de registro de Cliente o Vendedor
    *
-   * @param string $formServer Ruta al archivo del servidor al que se le enviará los formularios
+   * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
    * @param string $user El registro a crear y los componentes informativos. Opciones disponibles:
    *                "buyer": Crea el registro con los campos necesarios para la cuenta de Cliente
    *                "seller": Crea el registro con los campos necesarios para la cuenta de empresa Vendedor
    * @return string Código HTML con el registro para ser insertado en el documento
    */
-  public  function __construct(string $formServer, string $user)
+  public  function __construct(array $url, string $user)
   {
     $inputs = array_merge(self::INPUT[$user], self::INPUT['common']);
 
-    $this->code = '<section class="section-signup">
+    $code = '<section class="section-signup">
                     <div class="form-box">';
-    $this->code .= self::getForm($formServer, $user, $inputs) .
+    $code .= self::getForm($url['server'], $user, $inputs) .
       '</div>';
-    $this->code .= self::getInfo($user);
-    $this->code .= '</section>';
+    $code .= self::getInfo($user, $url['signup-seller'], $url['signup-buyer']);
+    $code .= '</section>';
+
+    parent::__construct($code);
   }
 
 
@@ -106,7 +89,7 @@ class Signup
     $form = new Form(
       [
         'name' => 'signup-' . $user,
-        'legend' => 'Registro ' . self::TITLE[$user],
+        'legend' => self::TITLE[$user],
         'url' => $urlServer,
         'method' => 'POST',
         'fieldset' => true
@@ -129,11 +112,16 @@ class Signup
    * @param string $user Tipo de usuario. Opciones disponibles:
    *                "buyer": para información al Cliente
    *                "seller": para información al Vendedor
+   * @param string $urlBuyer Enlace a la página de registro de clientes
+   * @param string $urlBuyer Enlace a la página de registro de vendedores
    * @return string Código HTML con la sección informativa lista para ser agregada al documento
    */
-  private function getInfo(string $user): string
+  private function getInfo(string $user, string $urlBuyer, string $urlSeller): string
   {
-    $optioninfo = self::INFO[$user];
+    $optioninfo = match ($user) {
+      "buyer" => ['title' => "¿Eres vendedor?...", "label" => "Regístrate aquí como empresa", "href" => "/?page=$urlBuyer"],
+      "seller" => ["title" => "¿Eres cliente?...", "label" => "Regístrate aquí como cliente", "href" => "/?page=$urlSeller"],
+    };
 
     $info = '<div class="info-box">
                 <p class="info">
@@ -148,16 +136,5 @@ class Signup
     $info .= '</div>';
 
     return $info;
-  }
-
-
-  /**
-   * Devuelve el contenido HTML del la página contacto
-   *
-   * @return string Código HTML de la página Contacto para ser insertado
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

@@ -13,31 +13,24 @@ class Article
    * @param string $id Identificador del artículo para ser localizado en la base de datos
    * @param string $img Imagen del artículo
    * @param string $title Nombre descriptivo del artículo
-   * @param string $shop Tienda que lo vende
+   * @param string $idshop Tienda que lo vende
    * @param string $description Descripción del artículo
    * @param string $price Precio del artículo
    * @param boolean $isLike Indica si lo tiene en favoritos el usuario que hizo la consulta
    * @return string código HTML con el preview del artículo
    */
-  public static function getPreview(
-    string $id,
-    string $img,
-    string $title,
-    string $shop,
-    string $description,
-    string $price,
-    bool $isLike = false
-  ): string {
-    $article = '<div class="card">
-                        <picture id="' . $id . '">
-                            <img src="' . $img . '" alt="Imagen del producto" />
+  public static function getPreview(array $data, bool $isLike): string
+  {
+    $article = '<div class="card data-iduser='.$data["iduser"].'">
+                        <picture id="' . $data["idarticle"] . '">
+                            <img src="' . $data["img"] . '" alt="Imagen del producto" />
                         </picture>
                         <div class="info-card">
-                            <p><span class="title">Producto: </span>' . $title . '</p>
-                            <p><span class="title">Tienda: </span>' . $shop . '</p>
-                            <p><span class="title">Descripción: </span>' . $description . '</p>
+                            <p><span class="title">Producto: </span>' . $data["name"] . '</p>
+                            <p><span class="title">Tienda: </span>' . $data["username"] . '</p>
+                            <p><span class="title">Descripción: </span>' . $data["description"] . '</p>
                             <p class="data">
-                            <span class="price">' . $price . '</span>';
+                            <span class="price">' . $data["price"] . '</span>';
 
     //        TODO: realizar acción al pulsar para info del artículo y del botón de favorito
     $article .= ($isLike)

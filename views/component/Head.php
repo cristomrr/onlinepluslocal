@@ -5,21 +5,15 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Head
+class Head extends ViewComponent
 {
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
 
   /**
    * Constructor para la creación del componente Head
    */
   public function __construct()
   {
-    $this->code = '<head>
+    $code = '<head>
                     <meta charset="UTF-8" />
                     <link rel="icon" type="image/svg+xml" href="./asset/favicon.png" />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,15 +43,7 @@ class Head
                     
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
                 </head>';
-  }
 
-  /**
-   * Contiene el contenido del Head completo de todo el sitio web
-   *
-   * @return string Código HTML de Head para ser insertado en el documento
-   */
-  public function getCode(): string
-  {
-    return $this->code;
+    parent::__construct($code);
   }
 }

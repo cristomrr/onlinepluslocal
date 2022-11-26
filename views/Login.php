@@ -5,17 +5,8 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Login
+class Login extends ViewComponent
 {
-
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-  private const URL_PAGE_SIGNUP_BUYER = 'registro-cliente';
-  private const URL_PAGE_SIGNUP_SELLER = 'registro-vendedor';
   private const INPUTS_FORM = [
     ["id" => "email", "label" => " Correo electrónico:", "type" => "email", "component" => "input"],
     ["id" => "password", "label" => " Contraseña:", "type" => "password", "component" => "input"],
@@ -24,29 +15,31 @@ class Login
   /**
    * Contiene el código HTML del contenido de la página Login
    *
-   * @param string $urlServer Ruta al archivo del servidor al que se le enviará los formularios
+   * @param array $urlServer Ruta al archivo del servidor al que se le enviará los formularios
    */
-  public function __construct($urlServer)
+  public function __construct(array $url)
   {
-    $this->code =  '<section class="section-login">
+    $code =  '<section class="section-login">
               <div class="form-login">
-              ' . $this->getForm($urlServer) . '
+              ' . $this->getForm($url['server']) . '
               </div>
 
               <p>¿No tienes una cuenta?</p>
 
               <div class="login-btn">
-                <a href="/?page=' . self::URL_PAGE_SIGNUP_BUYER . '">Crear cuenta de cliente</a>
+                <a href="/?page=' . $url['signup-buyer'] . '">Crear cuenta de cliente</a>
                 <p>ó</p>
-                <a href="/?page=' . self::URL_PAGE_SIGNUP_SELLER . '">Crear cuenta de empresa</a>
+                <a href="/?page=' . $url['signup-seller'] . '">Crear cuenta de empresa</a>
               </div>
             </section>';
+
+            parent::__construct($code);
   }
 
   /**
    * Crea el formulario de login
    *
-   * @return string Código HTML con el formulario para ser agregado al documento
+   * @return string Código HTML con el formulario de login
    */
   private function getForm($urlServer): string
   {
@@ -67,16 +60,5 @@ class Login
     );
 
     return $form->getCode();
-  }
-
-
-  /**
-   * Código HTML de la vista Login
-   *
-   * @return string Devuelve el código HTML con el componente Login
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

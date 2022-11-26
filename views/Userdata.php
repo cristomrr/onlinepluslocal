@@ -1,14 +1,7 @@
 <?php
 
-class Userdata
+class Userdata extends ViewComponent
 {
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-
   /**
    * Campos del apartado de subida de nuevos productos al servidor
    */
@@ -50,20 +43,23 @@ class Userdata
   /**
    * Crea el código de perfil de Cliente o Vendedor
    *
+   * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
    * @param string $user El perfil a crear y los formularios según el tipo de usuario. Opciones disponibles:
    *                "buyer": Crea el perfil con los campos necesarios para la cuenta de Cliente
    *                "seller": Crea el perfil con los campos necesarios para la cuenta de empresa Vendedor
-   * @return string Código HTML con el perfil para ser insertado en el documento
+   *
    */
-  public  function __construct(string $urlServer, string $user, string $username)
+  public  function __construct(array $url, string $user, string $username)
   {
-    $this->code = '<section class="section-userdata">';
-    $this->code .= $this->getGreeting($username);
+    $code = '<section class="section-userdata">';
+    $code .= $this->getGreeting($username);
     if ($user === 'seller') {
-      $this->code .= $this->getUpArticle($urlServer);
+      $code .= $this->getUpArticle($url['server']);
     }
-    $this->code .= $this->getUserdata($urlServer, $user);
-    $this->code .= '</section>';
+    $code .= $this->getUserdata($url['server'], $user);
+    $code .= '</section>';
+
+    parent::__construct($code);
   }
 
 
@@ -142,16 +138,5 @@ class Userdata
     );
 
     return $form->getCode();
-  }
-
-
-  /**
-   * Devuelve el contenido HTML del la página perfil
-   *
-   * @return string Código HTML de la página Contacto para ser insertado
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

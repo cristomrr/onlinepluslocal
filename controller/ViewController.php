@@ -1,56 +1,53 @@
 <?php
-
-require_once './views/component/Head.php';
-require_once './views/component/Header.php';
-require_once './views/component/Footer.php';
-
-require_once './views/Home.php';
-require_once './views/Contact.php';
-require_once './views/Login.php';
-require_once './views/Signup.php';
-require_once './views/Search.php';
-require_once './views/Favorite.php';
-require_once './views/Userdata.php';
-
-require_once './views/component/Form.php';
-require_once './views/component/ImgGirl.php';
-require_once './views/component/Article.php';
+session_start();
 
 class ViewController
 {
 
-  private const URL_SERVER = './server.php';
+  private const URL = [
+    'server' => './index.php',
+    'signup-seller' => 'registro-empresa',
+    'signup-buyer' => 'registro-cliente',
+    'contact' => 'contacto',
+    'privacy' => '#',
+  ];
+  private const LINKS =
+  [
+    'search' => ['href' => './?page=buscador', 'color' => 'white', 'title' => 'Buscador', 'text' => 'search'],
+    'favorite' => ['href' => './?page=favoritos', 'color' => 'red', 'title' => 'Favoritos', 'text' => 'favorite'],
+    'login' => ['href' => './?page=login', 'color' => 'white', 'title' => 'Login', 'text' => 'login'],
+    'logout' => ['href' => './?action=logout', 'color' => 'white', 'title' => 'Logout', 'text' => 'logout'],
+    'user' => ['href' => './?page=perfil', 'color' => 'white', 'title' => 'Perfil', 'text' => 'person'],
+  ];
+  // private $dc;
+  private $db;
 
   public function __construct()
   {
+    require_once './views/ViewComponent.php';
+
+    require_once './views/component/Head.php';
+    require_once './views/component/Header.php';
+    require_once './views/component/Footer.php';
+
+    require_once './views/Home.php';
+    require_once './views/Contact.php';
+    require_once './views/Login.php';
+    require_once './views/Signup.php';
+    require_once './views/Search.php';
+    require_once './views/Favorite.php';
+    require_once './views/Userdata.php';
+
+    require_once './views/component/Form.php';
+    require_once './views/component/ImgGirl.php';
+    require_once './views/component/Article.php';
+
+    require_once './model/DBAction.php';
+
+    // $this->dc = new DataController();
+    $this->db = new DBAction();
   }
 
-
-  /**
-   * Crea e imprime en el navegador la página agregando las vistas pasadas por parámetro al documento
-   *
-   * @param string $header Cabecera de la página (Header)
-   * @param string $content Contenido de la página (Main)
-   */
-  private function setPage(string $header, string $content)
-  {
-    $head = new Head();
-    $footer = new Footer();
-
-    $doc = '<!DOCTYPE html>
-            <html lang="es">
-              ' . $head->getCode() . '
-              <body>
-                ' . $header . '
-                <main class="content-body">
-                  ' . $content . '
-                </main>
-                ' . $footer->getCode() . '
-              </body>
-            </html>';
-
-    echo $doc;
-  }
 
   /**
    * Undocumented function
@@ -58,132 +55,57 @@ class ViewController
    * @param string $page
    * @return void
    */
-  public function printView(string $page)
+  public function printView(string $page, array $articles = [])
   {
-    $user = 'seller';
+    // $page = 'resultado-busqueda';
+    $options = ['column' => 'users.id', 'value' => 1];
 
     match ($page) {
-      'perfil-vendedor' => $this->viewUserdataSeller(),
-      'perfil-cliente' => $this->viewUserdataBuyer(),
-      'favoritos' => $this->viewFavorite($user),
-      'buscador' => $this->viewSearch($user),
-      'registro-cliente' => $this->viewSignupBuyer(),
-      'registro-vendedor' => $this->viewSignupSeller(),
-      'contacto' => $this->viewContact($user),
-      'login', 'out-session' => $this->viewLogin($user),
-      default =>
-      $this->viewHome(),
+      'perfil' => $this->setPage('', new Userdata(self::URL, 'seller', 'CMRR'), true),
+      'favoritos' => $this->setPage('', new Favorite(self::URL, $this->db->getUserFavorites($_SESSION['user'])), true),
+      'buscador' => $this->setPage('', new Search(self::URL, $this->db->getAllArticles()), true),
+      'resultado-busqueda' => $this->setPage('', new Search(self::URL, $articles), true),
+      'registro-cliente' => $this->setPage('', new Signup(self::URL, 'buyer'), false),
+      'registro-empresa' => $this->setPage('', new Signup(self::URL, 'seller'), false),
+      'contacto' => $this->setPage('', new Contact(self::URL), false),
+      'login', 'out-session' => $this->setPage('login', new Login(self::URL), false),
+      default => $this->setPage('', new Home(self::URL), false),
     };
   }
 
-
   /**
-   * Vista de la página de registro vendedores
+   * Crea e imprime en el navegador la página agregando las vistas pasadas por parámetro al documento
+   *
+   * @param string $hideLink    (Header)
+   * @param ViewComponent $content Contenido de la página (Main)
    */
-  private function viewUserdataSeller()
+  private function setPage(string $hideLink, ViewComponent $content, bool $needSession)
   {
-    $header = new Header(['search', 'favorite', 'logout']);
-    $viewUserdataSeller = new Userdata(self::URL_SERVER, 'seller', 'CMRR Soluciones');
-    $this->setPage($header->getCode(), $viewUserdataSeller->getCode());
-  }
+    $head = new Head();
 
+    $linksHeader = (isset($_SESSION['user']))
+      ? array_filter(self::LINKS, fn ($k) => $k !== $hideLink && $k !== 'login', ARRAY_FILTER_USE_KEY)
+      : [self::LINKS['login']];
+    $header = new Header($linksHeader);
 
-  /**
-   * Vista de la página de registro clientes
-   */
-  private function viewUserdataBuyer()
-  {
-    $header = new Header(['search', 'favorite', 'logout']);
-    $viewUserdataBuyer = new Userdata(self::URL_SERVER, 'buyer', 'Cristo');
-    $this->setPage($header->getCode(), $viewUserdataBuyer->getCode());
-  }
+    $content = ($needSession)
+      ? (isset($_SESSION['user']) ? $content : new Login(self::URL))
+      : $content;
 
+    $footer = new Footer(self::URL);
 
-  /**
-   * Vista de la página de favoritos
-   * 
-   * @param string $user El tipo de cliente que inició sesión. Disponibles: buyer o seller
-   */
-  private function viewFavorite($user)
-  {
-    // TODO: datos de ejemplo para ver el resultado visual
-    $data_tmp = file_get_contents('./test/data-product/articles_testing.json');
-    $products = json_decode($data_tmp, true);
+    $doc = '<!DOCTYPE html>
+            <html lang="es">
+              ' . $head->getCode() . '
+              <body>
+                ' . $header->getCode() . '
+                <main class="content-body">
+                  ' . $content->getCode() . '
+                </main>
+                ' . $footer->getCode() . '
+              </body>
+            </html>';
 
-    $header = new Header(['search', $user, 'logout']);
-    $viewFavorite = new Favorite($products);
-    $this->setPage($header->getCode(), $viewFavorite->getCode());
-  }
-
-
-  /**
-   * Vista de la página de búsqueda
-   * 
-   * @param string $user El tipo de cliente que inició sesión. Disponibles: buyer o seller
-   */
-  private function viewSearch($user)
-  {
-    // TODO: datos de ejemplo para ver el resultado visual
-    $data_tmp = file_get_contents('./test/data-product/articles_testing.json');
-    $products = json_decode($data_tmp, true);
-
-    $header =   new Header(['favorite', $user, 'logout']);
-    $viewSearch = new Search(self::URL_SERVER, $products);
-    $this->setPage($header->getCode(), $viewSearch->getCode());
-  }
-
-
-  /**
-   * Vista de la página de registro cliente
-   */
-  private function viewSignupBuyer()
-  {
-    $header =   new Header(['login']);
-    $viewSignupBuyer = new Signup(self::URL_SERVER, 'buyer');
-    $this->setPage($header->getCode(), $viewSignupBuyer->getCode());
-  }
-
-
-  /**
-   * Vista de la página de registro vendedor
-   */
-  private function viewSignupSeller()
-  {
-    $header = new Header(['login']);
-    $viewSignupSeller = new Signup(self::URL_SERVER, 'seller');
-    $this->setPage($header->getCode(), $viewSignupSeller->getCode());
-  }
-
-
-  /**
-   * Vista de la página de Contacto
-   */
-  private function viewContact($user)
-  {
-    $header =  new Header(['search', 'favorite', $user, 'logout']);
-    $viewContact = new Contact(self::URL_SERVER);
-    $this->setPage($header->getCode(), $viewContact->getCode());
-  }
-
-
-  /**
-   * Vista de la página de login
-   */
-  private function viewLogin($user)
-  {
-    $header = new Header(['search', 'favorite', $user, 'logout']);
-    $viewLogin = new Login(self::URL_SERVER);
-    $this->setPage($header->getCode(), $viewLogin->getCode());
-  }
-
-
-  /**
-   * Vista de la página de inicio
-   */
-  private function viewHome()
-  {
-    $header = new Header(['login']);
-    $viewHome = new Home();
-    $this->setPage($header->getCode(), $viewHome->getCode());
+    echo $doc;
   }
 }

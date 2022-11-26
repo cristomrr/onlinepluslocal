@@ -5,16 +5,8 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Form
+class Form extends ViewComponent
 {
-
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-
   /**
    * Construye el código del formulario con la configuración pasada por parámetros
    *
@@ -42,27 +34,29 @@ class Form
     string $extra
   ) {
 
-    $this->code = '<form action="' . $form["url"] . '" method="' . $form["method"] . '" class="form">';
-    $this->code .= ($form["fieldset"]) ? '<fieldset>' : '';
-    $this->code .= '<legend class="global-title">' . $form["legend"] . '</legend>';
-    $this->code .= '<input type="text" name="formname" id="formname" class="display-none" value="' . $form["name"] . '"/>';
+    $code = '<form action="' . $form["url"] . '" method="' . $form["method"] . '" class="form">';
+    $code .= ($form["fieldset"]) ? '<fieldset>' : '';
+    $code .= '<legend class="global-title">' . $form["legend"] . '</legend>';
+    $code .= '<input type="text" name="formname" id="formname" class="display-none" value="' . $form["name"] . '"/>';
     foreach ($inputs as $input) {
       switch ($input['component']) {
         case 'file':
-          $this->code .= self::getInputFile($input['id'], $input['label'], $input['options']);
+          $code .= self::getInputFile($input['id'], $input['label'], $input['options']);
           break;
         case 'input':
-          $this->code .= self::getInput($input['id'], $input['label'], $input['type']);
+          $code .= self::getInput($input['id'], $input['label'], $input['type']);
           break;
         case 'textarea':
-          $this->code .= self::getTextarea($input['id'], $input['label'], $input['options']);
+          $code .= self::getTextarea($input['id'], $input['label'], $input['options']);
           break;
       }
     }
-    $this->code .= $extra;
-    $this->code .= self::getBtnSubmit($btnSubmit['text'], $btnSubmit['icon']);
-    $this->code .= ($form["fieldset"]) ? '</fieldset>' : '';
-    $this->code .= '</form>';
+    $code .= $extra;
+    $code .= self::getBtnSubmit($btnSubmit['text'], $btnSubmit['icon']);
+    $code .= ($form["fieldset"]) ? '</fieldset>' : '';
+    $code .= '</form>';
+
+    parent::__construct($code);
   }
 
   private function getInputFile(string $id, string $label, string $options): string
@@ -116,7 +110,6 @@ class Form
   }
 
 
-
   /**
    * Crea el código HTML del botón de envío del formulario.
    *
@@ -134,15 +127,5 @@ class Form
     $code .= '</button>';
 
     return $code;
-  }
-
-  /**
-   * Código HTML del componente Header para insertar en el documento
-   *
-   * @return string Devuelve el código HTML con el Header del documento
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

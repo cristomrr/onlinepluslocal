@@ -5,15 +5,8 @@
  *  - Formulario de búsqueda
  *  - Resultados de artículos
  */
-class Search
+class Search extends ViewComponent
 {
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-
   private const INPUTS_SEARCH = [
     ["id" => "name", "label" => " Producto:", "type" => "text", "component" => "input"],
     ["id" => "province", "label" => " Provincia:", "type" => "text", "component" => "input"],
@@ -24,40 +17,37 @@ class Search
   /**
    * Construcción de la vista Búsqueda
    * 
-   * @param string $urlServer Ruta al archivo del servidor al que se le enviará los formularios
+   * @param array $urlServer Ruta al archivo del servidor al que se le enviará los formularios
    * @param array $articles Colección con los favoritos del usuario   * 
    */
-  public function __construct(string $urlServer, array $articles = [])
+  public function __construct(array $url, array $articles = [])
   {
     $imgGirl = new ImgGirl('¡Nos vamos de compras!');
 
-    $this->code = '<section class="search">
+    $code = '<section class="search">
               <div class="girl">
                 ' . $imgGirl->getCode() . '
               </div>
               <div class="form-search">
-                ' . self::getForm($urlServer) . '
+                ' . self::getForm($url['server']) . '
               </div>
             </section>';
 
-    $this->code .= '<section class="result-search">
-              <h4 class="global-title-plane">Resultados:</h4>
+    $code .= '<section class="result-search">
+              <h4 class="global-title-plane">Resultados: ' . count($articles) . '</h4>
               <div class="articles">';
 
-    foreach ($articles as $k => $v) {
-      $this->code .= Article::getPreview(
-        $v['id'],
-        $v['img'],
-        $v['name'],
-        $v['shop'],
-        $v['description'],
-        $v['price'],
-        false
-      );
+    if (count($articles) !== 0) {
+      foreach ($articles as $k => $v) {
+        $code .= Article::getPreview($v, false);
+      }
+    } else {
+      $code .= '<p class=zero-articles>No existen artículos</p>';
     }
 
-    $this->code .= '</div>
-            </section>';
+    $code .= '</div></section>';
+
+    parent::__construct($code);
   }
 
 
@@ -75,7 +65,7 @@ class Search
         'name' => 'search',
         'legend' => 'Buscador',
         'url' => $urlServer,
-        'method' => 'GET',
+        'method' => 'POST',
         'fieldset' => false
       ],
       self::INPUTS_SEARCH,
@@ -87,16 +77,5 @@ class Search
     );
 
     return $form->getCode();
-  }
-
-
-  /**
-   * Devuelve el contenido HTML del la página contacto
-   *
-   * @return string Código HTML de la página Contacto para ser insertado
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }

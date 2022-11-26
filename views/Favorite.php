@@ -5,60 +5,38 @@
  *  - Formulario de búsqueda
  *  - Resultados de artículos
  */
-class Favorite
+class Favorite extends ViewComponent
 {
-  /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
-   */
-  private string $code;
-
   /**
    * Construcción de la vista Búsqueda
    * 
+   * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
    * @param array $articles Colección con los favoritos del usuario
    */
-  public function __construct(array $articles = [])
+  public function __construct(array $url, array $articles = [])
   {
     $imgGirl = new ImgGirl('¡Ohh! que cosas te gustan');
 
-    //TODO: Código de artículos para pruebas, eliminar cuando se trabaje con la DB (línea 40-46)
-
-    $this->code = '<section class="search">
+    $code = '<section class="search">
                     <div class="girl">
                       ' . $imgGirl->getCode() . '
                     </div>
                   </section>';
 
-    $this->code .= '<section class="result-search">
-                      <h4 class="global-title-plane">4 artículos favoritos:</h4>
+    $code .= '<section class="result-search">
+                      <h4 class="global-title-plane">Artículos favoritos: ' . count($articles) . '</h4>
                       <div class="articles">';
 
-    foreach ($articles as $k => $v) {
-      $this->code .= Article::getPreview(
-        $v['id'],
-        $v['img'],
-        $v['name'],
-        $v['shop'],
-        $v['description'],
-        $v['price'],
-        false
-      );
+    if (count($articles) !== 0) {
+      foreach ($articles as $k => $v) {
+        $code .= Article::getPreview($v, true);
+      }
+    } else {
+      $code .= '<p class=zero-articles>No tienes artículos favoritos</p>';
     }
 
-    $this->code .= '</div>
-                  </section>';
-  }
+    $code .= '</div></section>';
 
-
-  /**
-   * Devuelve el contenido HTML del la página contacto
-   *
-   * @return string Código HTML de la página Contacto para ser insertado
-   */
-  public function getCode(): string
-  {
-    return $this->code;
+    parent::__construct($code);
   }
 }

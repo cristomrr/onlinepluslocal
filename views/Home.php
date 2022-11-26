@@ -5,15 +5,13 @@
  * @author Cristo Manuel Rodríguez Rodríguez
  * @version 1.0.0
  */
-class Home
+class Home extends ViewComponent
 {
 
-   /**
-   * Almacena el código de la vista o componente de clase
-   *
-   * @var string código HTML de la vista o componente de clase
+  /**
+   * Colección de arrays de los bloques de información de la página principal
+   * @var array 
    */
-  private string $code;
   private array $infoblocks = [
     [
       'img' => "./assets/img/home-online.png",
@@ -37,24 +35,30 @@ class Home
       'text' => "¿Nuestra recompensa?... ayudar al consumidor,  para obtener una mayor oferta, mayor variedad de productos y todo a los mejores precios al existir mayor competencia. Y facilitar al comerciante esa visibilidad y posibilidad de llegar a una mayor cantidad de consumidores"
     ]
   ];
+
+  /**
+   * Mensaje llamativo que saldrá antes del pie de página
+   */
   private const LAST_MSG = 'Los tiempos están cambiando.. y nuestra forma de comprar también';
 
 
   /**
    * Prepara el contenido de la página de inicio del sitio
    *
-   * @return string Código HTML de la página de inicio para ser insertado en el cuerpo del documento
+   * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
    */
-  public function __construct()
+  public function __construct(array $url)
   {
     $imgGirl = new ImgGirl('¡Bienvenid@ a OnlinePlusLocal!');
 
     // Sección con la imagen de la chica como bienvenida
-    $this->code = '<section class="home-girl">' . $imgGirl->getCode() . '</section>';
+    $code = '<section class="home-girl">' . $imgGirl->getCode() . '</section>';
     // Sección de imágenes con información del programa a lo largo del documento
-    $this->code .= '<section class="home-info">' . $this->getInfoBlocks() . '</section>';
+    $code .= '<section class="home-info">' . $this->getInfoBlocks() . '</section>';
     // Sección final con un mensaje llamativo
-    $this->code .= '<p class="home-final-text">' . self::LAST_MSG . '</p>';
+    $code .= '<p class="home-final-text">' . self::LAST_MSG . '</p>';
+
+    parent::__construct($code);
   }
 
 
@@ -97,16 +101,5 @@ class Home
                             <img src=' . $img . ' alt=' . $alt . ' />
                         </picture>
                     </div>';
-  }
-
-
-  /**
-   * Código HTML de la vista Home
-   *
-   * @return string Devuelve el código HTML con el Header del documento
-   */
-  public function getCode(): string
-  {
-    return $this->code;
   }
 }
