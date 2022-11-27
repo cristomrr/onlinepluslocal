@@ -18,13 +18,12 @@ class Signup extends ViewComponent
    */
   private const INPUT = [
     "buyer" => [
-      ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
-      ["id" => "surname", "label" => " Apellidos:", "type" => "text", "component" => "input"],
-      ["id" => "dni", "label" => " DNI:", "type" => "text", "component" => "input"]
+      ["id" => "name", "label" => " Nombre y apellidos:", "type" => "text", "component" => "input"],
+      ["id" => "document", "label" => " DNI:", "type" => "text", "component" => "input"]
     ],
     "seller" => [
       ["id" => "name", "label" => " Nombre o razón social:", "type" => "text", "component" => "input"],
-      ["id" => "cif", "label" => " CIF:", "type" => "text", "component" => "input"]
+      ["id" => "document", "label" => " CIF:", "type" => "text", "component" => "input"]
     ],
     "common" => [
       ["id" => "phone", "label" => " Teléfono:", "type" => "tel", "component" => "input"],

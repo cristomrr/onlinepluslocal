@@ -16,10 +16,11 @@ class DBAction
    */
   public function getAllArticles(): array
   {
-    $result = $this->db->query('SELECT articles.id as idarticle, name, img, description, price, 
-                                       users.id as iduser, username, phone, email, address, city, province
-                                       FROM articles INNER JOIN users ON articles.idusers = users.id');
+    $sql = "SELECT articles.id as idarticle, name, img, description, price, 
+    users.id as iduser, username, phone, email, address, city, province
+    FROM articles INNER JOIN users ON articles.idusers = users.id";
 
+    $result = $this->db->query($sql);
     $resp = $result->fetch_all(MYSQLI_ASSOC);
 
     return $resp;
@@ -47,11 +48,11 @@ class DBAction
 
   public function getUserFavorites($idUser): array
   {
-    $sql = 'SELECT articles.id as idarticle, name, img, description, price, users.id as iduser, username, phone, email, address, city, province, favorites.idusers as favorite 
+    $sql = "SELECT articles.id as idarticle, name, img, description, price, users.id as iduser, username, phone, email, address, city, province, favorites.idusers as favorite 
     FROM favorites 
     INNER JOIN users ON favorites.idusers = users.id 
     INNER JOIN articles ON favorites.idusers = articles.id 
-    WHERE favorites.idusers=' . intval($idUser);
+    WHERE favorites.idusers=" . intval($idUser);
 
     // echo $sql;
     // exit();
@@ -63,37 +64,38 @@ class DBAction
   }
 
 
-
-
-
-  public function checkUserEmail($email): bool
+  public function checkUserEmailExist($email): bool
   {
-    $result = $this->db->query('SELECT COUNT(*) FROM users where email=' . $email);
-    $resp = $result->fetch_array(MYSQLI_ASSOC);
+    $sql = "SELECT COUNT(*) as `mum-users` FROM users where email='$email'";
+    $result = $this->db->query($sql);
+    $resp = $result->fetch_row();
 
-    return $resp;
+    return !($resp[0] === '0');
   }
 
   public function checkUserLogin(string $email, string $passw)
   {
-    $result = $this->db->query("SELECT id FROM users where email='$email' AND password='$passw'");
+    $sql = "SELECT id FROM users where email='$email' AND password='$passw'";
+    $result = $this->db->query($sql);
     $resp = $result->fetch_array(MYSQLI_ASSOC);
 
     return $resp;
   }
 
-  public function setUser(array $user)
+  public function setUser(array $v)
   {
-    $result = $this->db->query("INSERT INTO users (id, name, document, phone, email, address, city, province, password)
-    VALUES ( null, $user[name], $user[document],  $user[phone], $user[email], $user[address], $user[city], $user[province], $user[password])");
+    $sql = "INSERT INTO 
+    users (id, username, document, type, phone, email, address, city, province, password)
+    VALUES ( null, '$v[name]', '$v[document]', '$v[type]', '$v[phone]', '$v[email]', '$v[address]', '$v[city]', '$v[province]', '$v[password]')";
 
-    return $result->fetch_assoc(MYSQLI_NUM);
+    return $this->db->query($sql);
   }
 
-  public function getUser(int $id)
+  public function getUser(mixed $id)
   {
-    $result = $this->db->query("SELECT id, name, document, phone, email, address, city, province FROM users WHERE id=$id");
-    $resp = $result->fetch_assoc(MYSQLI_ASSOC);
+    $sql = "SELECT * FROM users WHERE id=$id";
+    $result = $this->db->query($sql);
+    $resp = $result->fetch_assoc();
 
     return $resp;
   }

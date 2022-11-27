@@ -9,13 +9,10 @@ $dc = new DataController();
 if (isset($_POST['formname'])) {
 
   match ($_POST['formname']) {
-    'login' => $dc->login($_POST['email'], $_POST['password']),
-    'search' => $dc->searchArticle([
-      'name' => $_POST['name'],
-      'province' => $_POST['province'],
-      'city' => $_POST['city']
-    ]),
-
+    'login' => $dc->login(),
+    'search' => $dc->searchArticle(),
+    'signup-buyer', 'signup-seller' => $dc->signup(),
+    'addarticle' => '',
     default => '',
   };
   exit();

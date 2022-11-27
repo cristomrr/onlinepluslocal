@@ -49,7 +49,8 @@ class Home extends ViewComponent
    */
   public function __construct(array $url)
   {
-    $imgGirl = new ImgGirl('¡Bienvenid@ a OnlinePlusLocal!');
+    // $imgGirl = new ImgGirl('¡Bienvenid@ a OnlinePlusLocal!');
+    $imgGirl = new ImgGirl('Pulsa en el enlace y activa tu cuenta');
 
     // Sección con la imagen de la chica como bienvenida
     $code = '<section class="home-girl">' . $imgGirl->getCode() . '</section>';

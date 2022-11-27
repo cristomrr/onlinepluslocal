@@ -1,4 +1,5 @@
 <?php
+// TODO: esta es la configuración local, la del servidor es diferente
 define('USER', 'root');
 define('PASSWORD', '');
 define('DATABASE', 'onlinepluslocal');

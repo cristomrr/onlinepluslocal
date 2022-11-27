@@ -4,8 +4,6 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-//$URL_SERVER = 'https://historiatelo.com/timeline/';
-
 
 
 class DataController
@@ -33,10 +31,12 @@ class DataController
   /**
    * Acción al iniciar sesión un usuario registrado
    */
-  public function login(string $email, string $passw)
+  public function login()
   {
-    $user = (isset($email) ? htmlentities(addslashes($email)) : null);
-    $password = (isset($passw) ? htmlentities(addslashes($passw)) : null);
+    $user = (isset($email) ? htmlentities(addslashes($_POST['email'])) : null);
+    $password = (isset($passw) ? htmlentities(addslashes($_POST['password'])) : null);
+
+    // TODO: agregar comprobar cuenta activa
 
     if ($user && $password) {
       $dbResp = $this->db->checkUserLogin($user, $password);
@@ -61,8 +61,13 @@ class DataController
   }
 
 
-  public function searchArticle($filters)
+  public function searchArticle()
   {
+    $filters = [
+      'name' => $_POST['name'],
+      'province' => $_POST['province'],
+      'city' => $_POST['city']
+    ];
     $sqlFilterWhere = 'WHERE';
     $isFirst = true;
     foreach ($filters as $column => $value) {
@@ -78,68 +83,71 @@ class DataController
     return $resp;
   }
 
-  public function getFavorites()
-  {
-    
-  }
-
-
-
 
   /**
    * Acción al regisrarse nuevo usuario
    */
   public function signup()
   {
-    // if ($input->action === "signup") {
-    //   $user = (isset($input->username) ? htmlentities(addslashes($input->username)) : null);
-    //   $passw = (isset($input->password) ? htmlentities(addslashes($input->password)) : null);
-    //   $email = (isset($input->email) ? htmlentities(addslashes($input->email)) : null);
+    $user = [
+      'type' => ($_POST['formname'] === 'signup-seller') ? 'seller' : 'buyer',
+      'name' => htmlentities(addslashes($_POST['name'])),
+      'document' => htmlentities(addslashes($_POST['document'])),
+      'phone' => htmlentities(addslashes($_POST['phone'])),
+      'email' => htmlentities(addslashes($_POST['email'])),
+      'address' => htmlentities(addslashes($_POST['address'])),
+      'city' => htmlentities(addslashes($_POST['city'])),
+      'province' => htmlentities(addslashes($_POST['province'])),
+      'password' => htmlentities(addslashes($_POST['password']))
+    ];
 
-    //   if ($user && $passw && $email) {
-    //       $resp = $timeline->checkUserExist($user, $email);
+    if ($this->db->checkUserEmailExist($user['email'])) {
+      echo 'Respuesta del servidor: Ya existe un usuario con ese email';
+    } else {
+      if ($this->db->setUser($user)) {
+        require_once './views/Mail.php';
+        $lastUser = $this->db->getUser('LAST_INSERT_ID()');
+        $messageHTML = Mail::getConfirmationHTML($lastUser);
+        $altMsg = "Para activar tu cuenta en OnlinePlusLocal copia el siguiente enlace y pegalo en el navegador:  
+        https://onlinepluslocal.cmrr.es/?action=activate,?.user=" . $LastUser['id'];
 
-    //       if (!$resp['user']['username'] && !$resp['user']['email']) {
-    //           $resp['ok'] = $timeline->createUser($user, $passw, $email);
-    //           $idUser = $timeline->getLastId('users');
+        echo $messageHTML;
+        exit;
 
-    //           if ($resp['ok']) {
+        $this->sendMail($messageHTML, $altMsg, $lastUser['username'], $lastUser['email']);
+        $this->vc->printView('login');
+      }
+    }
   }
 
-  public function sendMailConfirmation()
+  public function sendMail($messageHTML, $altMsg, $sendUser, $sendEmail)
   {
+    $mail = new PHPMailer(true);
+    $mail->SMTPDebug = 3;   //Muestra las trazas del mail, 0 para ocultarla en producción
+
+    $mail->IsSMTP();
+    $mail->Host = "smtp.ionos.es";
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Username = "onlinepluslocal@cmrr.es";
+    $mail->Password = ""; //TODO: aquí poner la contraseña del servidor
+    $mail->SMTPSecure = "tls";
+    $mail->Port = 587;
+
+    $mail->setFrom("onlinepluslocal@cmrr.es", "OnlinePlusLocal");
+    $mail->addAddress($sendEmail, $sendUser);
+
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+    $mail->Subject = 'Verifica tu email';
+    $mail->MsgHTML($messageHTML);
+    $mail->AltBody = $altMsg;
 
     try {
-      require_once './Confirmation.php';
-      $lastIdUser = $timeline->getLastId('users');
-      $messageHTML = Confirmation::getConfirmationHTML($lastIdUser);
-
-      $mail = new PHPMailer(true);
-      $mail->SMTPDebug = SMTP::DEBUG_OFF;   //Muestra las trazas del mail, 0 para ocultarla
-      $mail->Host = "smtp.ionos.es";
-      $mail->IsSMTP();
-      $mail->SMTPAuth = true;
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-      $mail->Username = "onlinepluslocal@cmrr.es";
-      $mail->Password = "#Ev@#646879663#Mash@#";
-      $mail->Port = 587;
-      $mail->CharSet = 'UTF-8';
-
-      $mail->setFrom("onlinepluslocal@cmrr.es", "OnlinePlusLocal");
-      $mail->addAddress($email, $user);
-
-      $mail->isHTML(true);                                  //Set email format to HTML
-      $mail->Subject = 'Verifica tu email';
-      $mail->MsgHTML($messageHTML);
-      $mail->AltBody = "Para activar tu cuenta en OnlinePlusLocal copia el siguiente enlace 
-                    y pegalo en el navegador:  
-                    https://onlinepluslocal.cmrr.es/?action=activate,?user=$iduser";
       $mail->send();
-      $resp['ok'] = true;
-      $resp['message'] = ['¡OK!', 'Consulta tu correo electrónico', 'para verificar el registro'];
+      echo 'Activa tu cuenta en el mensaje enviado a tu email y podrás iniciar sesión';
     } catch (Exception $err) {
-      $resp['ok'] = false;
-      $resp['message'] = ["Error con el servicio de correo.", " Info: {$mail->ErrorInfo}"];
+      echo "Error al enviar el email. Info: {$mail->ErrorInfo}";
     }
   }
 }

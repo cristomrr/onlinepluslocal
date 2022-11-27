@@ -57,11 +57,9 @@ class ViewController
    */
   public function printView(string $page, array $articles = [])
   {
-    // $page = 'resultado-busqueda';
-    $options = ['column' => 'users.id', 'value' => 1];
 
     match ($page) {
-      'perfil' => $this->setPage('', new Userdata(self::URL, 'seller', 'CMRR'), true),
+      'perfil' => $this->setPage('', new Userdata(self::URL, $this->db->getUser($_SESSION['user']), 'CMRR'), true),
       'favoritos' => $this->setPage('', new Favorite(self::URL, $this->db->getUserFavorites($_SESSION['user'])), true),
       'buscador' => $this->setPage('', new Search(self::URL, $this->db->getAllArticles()), true),
       'resultado-busqueda' => $this->setPage('', new Search(self::URL, $articles), true),

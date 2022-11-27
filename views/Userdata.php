@@ -21,21 +21,19 @@ class Userdata extends ViewComponent
    */
   private const INPUTS_USERDATA = [
     "buyer" => [
-      ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
-      ["id" => "surname", "label" => " Apellidos:", "type" => "text", "component" => "input"],
-      ["id" => "dni", "label" => " DNI:", "type" => "text", "component" => "input"]
+      ["id" => "name", "label" => " Nombre y apellidos:", "type" => "text", "component" => "input-value", "value" => ''],
+      ["id" => "document", "label" => " DNI:", "type" => "text", "component" => "input-value", "value" => '']
     ],
     "seller" => [
-      ["id" => "name", "label" => " Nombre o razón social:", "type" => "text", "component" => "input"],
-      ["id" => "cif", "label" => " CIF:", "type" => "text", "component" => "input"]
+      ["id" => "name", "label" => " Nombre o razón social:", "type" => "text", "component" => "input-value", "value" => ''],
+      ["id" => "document", "label" => " CIF:", "type" => "text", "component" => "input-value", "value" => '']
     ],
     "common" => [
-      ["id" => "phone", "label" => " Teléfono:", "type" => "tel", "component" => "input"],
-      ["id" => "email", "label" => " Correo electrónico:", "type" => "email", "component" => "input"],
-      ["id" => "address", "label" => " Dirección:", "type" => "text", "component" => "input"],
-      ["id" => "city", "label" => " Localidad:", "type" => "text", "component" => "input"],
-      ["id" => "province", "label" => " Provincia:", "type" => "text", "component" => "input"],
-      ["id" => "password", "label" => " Contraseña:", "type" => "password", "component" => "input"]
+      ["id" => "phone", "label" => " Teléfono:", "type" => "tel", "component" => "input-value", "value" => ''],
+      ["id" => "email", "label" => " Correo electrónico:", "type" => "email", "component" => "input-value", "value" => ''],
+      ["id" => "address", "label" => " Dirección:", "type" => "text", "component" => "input-value", "value" => ''],
+      ["id" => "city", "label" => " Localidad:", "type" => "text", "component" => "input-value", "value" => ''],
+      ["id" => "province", "label" => " Provincia:", "type" => "text", "component" => "input-value", "value" => '']
     ]
   ];
 
@@ -44,16 +42,16 @@ class Userdata extends ViewComponent
    * Crea el código de perfil de Cliente o Vendedor
    *
    * @param array $url Rutas de enlace, como al archivo principal del servidor para formularios
-   * @param string $user El perfil a crear y los formularios según el tipo de usuario. Opciones disponibles:
+   * @param array $user El perfil a crear y los formularios según el tipo de usuario. Opciones disponibles:
    *                "buyer": Crea el perfil con los campos necesarios para la cuenta de Cliente
    *                "seller": Crea el perfil con los campos necesarios para la cuenta de empresa Vendedor
    *
    */
-  public  function __construct(array $url, string $user, string $username)
+  public  function __construct(array $url, array $user)
   {
     $code = '<section class="section-userdata">';
-    $code .= $this->getGreeting($username);
-    if ($user === 'seller') {
+    $code .= $this->getGreeting($user['username']);
+    if ($user['type'] === 'seller') {
       $code .= $this->getUpArticle($url['server']);
     }
     $code .= $this->getUserdata($url['server'], $user);
@@ -71,7 +69,8 @@ class Userdata extends ViewComponent
    */
   public function getGreeting(string $username): string
   {
-    $code = '<h4 class="greeting">Bienvenido ' . $username . '</h4>';
+    $firstname = explode(' ', $username);
+    $code = '<h4 class="greeting">Bienvenido ' . $firstname[0] . '</h4>';
 
     return $code;
   }
@@ -87,7 +86,7 @@ class Userdata extends ViewComponent
   {
     $form = new Form(
       [
-        'name' => 'addArticle',
+        'name' => 'addarticle',
         'legend' => 'Subir producto',
         'url' => $urlServer,
         'method' => 'POST',
@@ -109,17 +108,25 @@ class Userdata extends ViewComponent
    * Formulario con los datos del usuario, para la visualización o edición
    *
    * @param string $urlServer Ruta del archivo del servidor al que se envía el formulario
-   * @param string $user Indica el tipo de formulario a cargar (Cliente o Vendedor)
+   * @param array $user 
    * @return string Código HTML con el formulario para ser agregado al documento
    */
-  private function getUserdata(string $urlServer, string $user): string
+  private function getUserdata(string $urlServer, array $user): string
   {
     $input = self::INPUTS_USERDATA['common'];
-    if ($user === 'seller') {
+    if ($user['type'] === 'seller') {
       $input = array_merge(self::INPUTS_USERDATA['seller'], $input);
-    } elseif ($user === 'buyer') {
+    } elseif ($user['type'] === 'buyer') {
       $input = array_merge(self::INPUTS_USERDATA['buyer'], $input);
     }
+
+    $input[0]['value'] = $user['username'];
+    $input[1]['value'] = $user['document'];
+    $input[2]['value'] = $user['phone'];
+    $input[3]['value'] = $user['email'];
+    $input[4]['value'] = $user['address'];
+    $input[5]['value'] = $user['city'];
+    $input[6]['value'] = $user['province'];
 
     $form = new Form(
       [

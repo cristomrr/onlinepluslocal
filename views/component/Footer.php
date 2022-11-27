@@ -20,7 +20,7 @@ class Footer extends ViewComponent
                       <a href="' . $url['privacy'] . '">Privacidad</a>
                       <a href="' . './ ' . '">Cookies</a>
                     </div>
-                    <p>Todos los derechos reservados © OnlinePlusLocal</p>
+                    <p>Todos los derechos reservados © OnlinePlusLocal 2022</p>
                   </footer>';
 
     parent::__construct($code);

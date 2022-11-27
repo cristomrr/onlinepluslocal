@@ -46,6 +46,9 @@ class Form extends ViewComponent
         case 'input':
           $code .= self::getInput($input['id'], $input['label'], $input['type']);
           break;
+        case 'input-value':
+          $code .= self::getInputValue($input['id'], $input['label'], $input['type'], $input['value']);
+          break;
         case 'textarea':
           $code .= self::getTextarea($input['id'], $input['label'], $input['options']);
           break;
@@ -83,6 +86,23 @@ class Form extends ViewComponent
     return '<label for="' . $id . '">
                 ' . $label . '
                 <input type="' . $type . '" name="' . $id  . '" id="' . $id  . '" />
+                </label>';
+  }
+
+  /**
+   * Crea el código HTML de un campo de entrada de texto del formulario.
+   *
+   * @param string $id Nombre identificador del campo de formulario
+   * @param string $label Nombre del campo que será visualizado por el usuario
+   * @param string $type Tipo de campo de formulario. Ejemplos: text, password, tel, email,...
+   * @param string $value Texto del atributo value del campo del input
+   * @return string Código HTML con el campo para ser insertado en un formulario
+   */
+  private function getInputValue(string $id, string $label, string $type, string $value): string
+  {
+    return '<label for="' . $id . '">
+                ' . $label . '
+                <input type="' . $type . '" name="' . $id  . '" id="' . $id  . '" value="' . $value . '" />
                 </label>';
   }
 
