@@ -8,7 +8,7 @@ class ViewController
 {
 
   private const URL = [
-    'server' => './',
+    'server' => '/',
     'signup-seller' => 'registro-empresa',
     'signup-buyer' => 'registro-cliente',
     'contact' => 'contacto',

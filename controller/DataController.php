@@ -135,6 +135,8 @@ class DataController
     $altMsg = "Contacto $_POST[email]:  $_POST[msg]";
 
     $this->sendMail($doc, $altMsg, 'Contacto', 'onlinepluslocal@cmrr.es', 'Mensaje de Contacto');
+
+    echo 'Mensaje enviado, gracias por contactar';
   }
 
   /**
@@ -165,7 +167,7 @@ class DataController
 
     $mail->isHTML(true);
     $mail->CharSet = 'UTF-8';
-    $mail->Subject = 'Mensaje de bienvenida';
+    $mail->Subject = $subject;
     $mail->MsgHTML($messageHTML);
     $mail->AltBody = $altMsg;
 
@@ -217,7 +219,7 @@ class DataController
       if (isset($_FILES['upfile'])) {
         $idArticle = ($this->db->getLastIDArticle() + 1);
         $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-        $path = "./assets/users/$_SESSION[user]/$idArticle.$extension";
+        $path = "/assets/users/$_SESSION[user]/$idArticle.$extension";
         if (move_uploaded_file($_FILES['upfile']['tmp_name'], $path)) {
           $resp = $this->db->setArticle(
             [
