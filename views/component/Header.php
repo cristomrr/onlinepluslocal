@@ -7,7 +7,7 @@
  */
 class Header extends ViewComponent
 {
-  private const LOGO = './assets/img/logo.png';
+  private const LOGO = '/assets/img/logo.png';
 
   /**
    * Constructor del Header del sitio web
@@ -15,11 +15,11 @@ class Header extends ViewComponent
    * @param string $logo Ruta a la imagen logo
    * @param array $linksHeader Enlaces con icono a crear con el orden de la posición del array.
    */
-  public function __construct(array $linksHeader)
+  public function __construct(array $linksHeader, array $url)
   {
     $code = '<header>
                     <div class="title-box">
-                        <a href="/">
+                        <a href="'.$url['server'].'/">
                             <img class="logo" src=' . self::LOGO . ' alt="Logo y enlace a la página principal" />
                         </a>
                         <h1>ONLINE plus LOCAL</h1>

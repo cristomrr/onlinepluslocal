@@ -2,7 +2,7 @@
 
 class DBAction
 {
-  private $db;
+  private mixed $db;
   private const SALT_PASSWD = 'CMRR';
   public function __construct()
   {
@@ -16,27 +16,14 @@ class DBAction
    * @param string $extra Código SQL extra encargado de filtrar resultados, como 'Limit 1,5'
    * @return array La colección de resultados
    */
-  public function getAllArticles($extra = ''): array
+  public function getAllArticles(string $extra = ''): array
   {
     $sql = "SELECT articles.id as idarticle, name, img, description, price, 
     users.id as iduser, username, phone, email, address, city, province
     FROM articles INNER JOIN users ON articles.idusers = users.id " . $extra;
 
     $result = $this->db->query($sql);
-    $resp = $result->fetch_all(MYSQLI_ASSOC);
-
-    return $resp;
-  }
-
-
-  /**
-   * Obtiene todos los artículos marcando en la coleción si el usuario que ha iniciado sesión lo tiene de favorito
-   *
-   * @return array Colección de todos los artículos
-   */
-  public function getAllArticlesMarkFavorites(): array
-  {
-    $allArticles = $this->getAllArticles();
+    $allArticles = $result->fetch_all(MYSQLI_ASSOC);
     $userFavorites = $this->getUserIDFavorites(intval($_SESSION['user']));
     foreach ($allArticles as $k => $v) {
       $v['like'] = (in_array($v['idarticle'], $userFavorites));
@@ -46,7 +33,7 @@ class DBAction
   }
 
 
-  /**
+   /**
    * Obtiene el artículo que contenga el valor en el campo especificado por parámetro
    *
    * @param string $filter parte de la sentencia sql que filtra artículos (WHERE, LIKE, ..)
@@ -60,9 +47,13 @@ class DBAction
     INNER JOIN users ON articles.idusers = users.id ' . $filter;
 
     $result = $this->db->query($sql);
-    $resp = $result->fetch_all(MYSQLI_ASSOC);
-
-    return $resp;
+    $allArticles = $result->fetch_all(MYSQLI_ASSOC);
+    $userFavorites = $this->getUserIDFavorites(intval($_SESSION['user']));
+    foreach ($allArticles as $k => $v) {
+      $v['like'] = (in_array($v['idarticle'], $userFavorites));
+      $allArticles[$k] = $v;
+    }
+    return $allArticles;
   }
 
 
@@ -87,7 +78,7 @@ class DBAction
    * @param array $v Objeto con las propiedades del artículo
    * @return bool TRUE|FALSE dependiendo de si se completo la acción
    */
-  public function setArticle(array $v)
+  public function setArticle(array $v): bool
   {
     $sql = "INSERT INTO articles(id, name, img, description, price, idusers)
             VALUES($v[id], '$v[name]', '$v[img]', '$v[description]', '$v[price]', $v[iduser])";
@@ -111,17 +102,15 @@ class DBAction
     WHERE favorites.idusers=" . $idUser;
 
     $result = $this->db->query($sql);
-    $resp = $result->fetch_all(MYSQLI_ASSOC);
-
-    return $resp;
+      return $result->fetch_all(MYSQLI_ASSOC);
   }
 
 
   /**
    * Obtiene los id de los artículos favoritos del usuario
    *
-   * @param [type] $idUser
-   * @return array
+   * @param int $idUser id del usuario
+   * @return array Colección de datos de favoritos
    */
   public function getUserIDFavorites(int $idUser): array
   {
@@ -159,7 +148,7 @@ class DBAction
    * @param integer $idarticle id del artículo a eliminar 
    * @return bool TRUE|FALSE si se completo la consulta
    */
-  public function deleteUserFavorites(int $iduser, int $idarticle)
+  public function deleteUserFavorites(int $iduser, int $idarticle): bool
   {
     $sql = "DELETE FROM favorites WHERE idusers=$iduser AND idarticles=$idarticle";
 
@@ -188,16 +177,14 @@ class DBAction
    *
    * @param string $email email del usuario que inicia sesión
    * @param string $passw password del ususario sin encriptar
-   * @return array 
+   * @return mixed
    */
-  public function checkUserLogin(string $email, string $passw): array
+  public function checkUserLogin(string $email, string $passw): mixed
   {
     $password_hash = $this->getPasswordHash($passw);
     $sql = "SELECT id FROM users where email='$email' AND password='$password_hash'";
     $result = $this->db->query($sql);
-    $resp = $result->fetch_array(MYSQLI_ASSOC);
-
-    return $resp;
+      return $result->fetch_array(MYSQLI_ASSOC);
   }
 
 
@@ -225,13 +212,11 @@ class DBAction
    * @param mixed $id id del usuario a obtener
    * @return array datos del usuario obtenido
    */
-  public function getUser(mixed $id)
+  public function getUser(mixed $id): array
   {
     $sql = "SELECT * FROM users WHERE id=$id";
     $result = $this->db->query($sql);
-    $resp = $result->fetch_assoc();
-
-    return $resp;
+      return $result->fetch_assoc();
   }
 
 
@@ -243,12 +228,10 @@ class DBAction
    */
   public function getPasswordHash(string $password):string
   {
-    $password_hash = hash(
-      'sha256',
-      self::SALT_PASSWD . hash('sha256', $password . self::SALT_PASSWD)
-    );
-
-    return $password_hash;
+      return hash(
+        'sha256',
+        self::SALT_PASSWD . hash('sha256', $password . self::SALT_PASSWD)
+      );
   }
 
 
@@ -258,22 +241,12 @@ class DBAction
    * @param array $v datos del usuario en un array asociativo
    * @return bool TRUE|FALSE si se completo la consulta
    */
-  public function updateUser(array $v)
+  public function updateUser(array $v): bool
   {
     $sql = "UPDATE users SET username='$v[name]', document='$v[document]', phone='$v[phone]',
              email='$v[email]', address='$v[address]', city='$v[city]', province='$v[province]'
              WHERE id=$v[id]";
 
     return $this->db->query($sql);
-  }
-
-
-
-
-  // TODO: Eliminar, se agrego para encriptar el password de usuarios de la base de datos
-  public function setPasswdDB($passw, $id)
-  {
-    $sql = "UPDATE users SET password='$passw' WHERE id=$id";
-    $result = $this->db->query($sql);
   }
 }

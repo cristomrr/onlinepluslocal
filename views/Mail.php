@@ -5,10 +5,10 @@ class Mail
   /**
    * Email enviado para dar la bienvenida al usuario y confirmar que está registrado
    *
-   * @param string $user nombre del usuario a ver en el mensaje
+   * @param array $user nombre del usuario a ver en el mensaje
    * @return string código HTML del mensaje
    */
-  public static function getConfirmationHTML(string $user)
+  public static function getConfirmationHTML(array $user): string
   {
     return "<!DOCTYPE html>
     <html lang='es'>

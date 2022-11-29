@@ -7,7 +7,7 @@
  */
 class ImgGirl extends ViewComponent
 {
-  private const IMG_GIRL = './assets/img/girl.png';
+  private const IMG_GIRL = '/assets/img/girl.png';
 
   /**
    * Prepara el código del componente

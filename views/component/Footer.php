@@ -16,7 +16,7 @@ class Footer extends ViewComponent
   {
     $code = '<footer>
                     <div class="link">
-                      <a href="/?page=' . $url['contact'] . '">Contacto</a>
+                      <a href="'.$url['server'].'/?page=' . $url['contact'] . '">Contacto</a>
                       <a href="' . 'javascript:;' . '">Privacidad</a>
                       <a href="' . 'javascript:;' . '">Cookies</a>
                     </div>

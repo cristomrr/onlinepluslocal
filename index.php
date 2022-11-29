@@ -28,10 +28,6 @@ require_once './controller/DataController.php';
 $vc = new ViewController();
 $dc = new DataController();
 
-// TODO: eliminar, se utilizo para encriptar contraseñas de usuarios que no la tenían encriptada
-// $db = new DBAction();
-// $db->setPasswdDB($db->getPasswordHash('ropa2022'), 1);
-
 /**
  * Obtiene los datos enviados al servidor, normalmente formularios
  */
@@ -43,6 +39,7 @@ if (isset($_POST['action'])) {
     'addarticle' => $dc->uploadArticle(),
     'userdata' => $dc->updateUserdata(),
     'change-favorites' => $dc->changeFavorites(),
+    'contact' => $dc->contact(),
     default => '',
   };
   exit();

@@ -14,23 +14,23 @@ class Home extends ViewComponent
    */
   private array $infoblocks = [
     [
-      'img' => "./assets/img/home-online.png",
+      'img' => "/assets/img/home-online.png",
       'alt' => "Personas buscando en internet",
       'text' => "La forma de comprar ha cambiado, muchos consumidores prefieren la compra online a la física por algunos beneficios que les aporta esas grandes empresas online, como compra más rápida al no desplazarse o más variedad y elección de lo buscado"
     ],
     [
-      'img' => "./assets/img/home-shops.jpg",
+      'img' => "/assets/img/home-shops.jpg",
       'alt' => "Negocios cerrados",
       'text' => "Este proyecto fue creado para ayudar a las pequeñas empresas, las cuales estaban cerrando debido a la falta de visibilidad al estar a la sombra de las grandes que han abarcado casi todo el mercado de la era digital"
     ],
     [
-      'img' => "./assets/img/home-buy.png",
+      'img' => "/assets/img/home-buy.png",
       'alt' => "Mujer comprando por el teléfono inteligente",
       'text' => "Lo que queremos lograr, es unir a todas esos pequeños negocios en un solo sitio, donde puedan así ofrecer al consumidor esas ventajas de la venta online en una plataforma, ofreciendo una mayor oferta de productos y precios competentes, junto a la posibilidad de recogerlo al lado de casa y pagarlo a la hora de recogerlo"
     ],
     [
 
-      'img' => "./assets/img/home-team.png",
+      'img' => "/assets/img/home-team.png",
       'alt' => "Personas levantando el logo de Online plus local",
       'text' => "¿Nuestra recompensa?... ayudar al consumidor,  para obtener una mayor oferta, mayor variedad de productos y todo a los mejores precios al existir mayor competencia. Y facilitar al comerciante esa visibilidad y posibilidad de llegar a una mayor cantidad de consumidores"
     ]

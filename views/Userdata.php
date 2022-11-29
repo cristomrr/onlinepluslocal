@@ -11,7 +11,7 @@ class Userdata extends ViewComponent
   private const INPUTS_ARTICLE = [
     ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
     ["id" => "price", "label" => " Precio:", "type" => "number", "component" => "input"],
-    ["id" => "description", "label" => " Descripción:", "options" => ["cols" => "20", "rows" => "10"], "component" => "textarea"],
+    ["id" => "description", "label" => " Descripción:", "options" => ["cols" => "20", "rows" => "5"], "component" => "textarea"],
     [
       "id" => "upfile",
       "label" => "Imagen JPG o PNG del artículo (Tamaño máximo 200Kb):",

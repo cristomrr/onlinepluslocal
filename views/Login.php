@@ -27,9 +27,9 @@ class Login extends ViewComponent
               <p>¿No tienes una cuenta?</p>
 
               <div class="login-btn">
-                <a href="/?page=' . $url['signup-buyer'] . '">Crear cuenta de cliente</a>
+                <a href="'.$url['server'].'/?page=' . $url['signup-buyer'] . '">Crear cuenta de cliente</a>
                 <p>ó</p>
-                <a href="/?page=' . $url['signup-seller'] . '">Crear cuenta de empresa</a>
+                <a href="'.$url['server'].'/?page=' . $url['signup-seller'] . '">Crear cuenta de empresa</a>
               </div>
             </section>';
 

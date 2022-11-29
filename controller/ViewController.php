@@ -8,11 +8,11 @@ class ViewController
 {
 
   private const URL = [
-    'server' => './index.php',
+    'server' => './',
     'signup-seller' => 'registro-empresa',
     'signup-buyer' => 'registro-cliente',
     'contact' => 'contacto',
-    'privacy' => '#',
+    'privacy' => '',
   ];
   private const LINKS = [
     'search' => ['href' => './?page=buscador', 'color' => 'white', 'title' => 'Buscador', 'text' => 'search'],
@@ -49,7 +49,7 @@ class ViewController
     match ($page) {
       'perfil' => $this->setPage(new Userdata(self::URL, $this->db->getUser($_SESSION['user'])), true),
       'favoritos' => $this->setPage(new Favorite(self::URL, $this->db->getUserFavorites(intval($_SESSION['user']))), true),
-      'buscador' => $this->setPage(new Search(self::URL, $this->db->getAllArticlesMarkFavorites()), true),
+      'buscador' => $this->setPage(new Search(self::URL, $this->db->getAllArticles()), true),
       'resultado-busqueda' => $this->setPage(new Search(self::URL, $articles), true),
       'registro-cliente' => $this->setPage(new Signup(self::URL, 'buyer'), false),
       'registro-empresa' => $this->setPage(new Signup(self::URL, 'seller'), false),
@@ -66,12 +66,12 @@ class ViewController
    */
   private function setPage(ViewComponent $content, bool $needSession): void
   {
-    $head = new Head();
+    $head = new Head(self::URL);
 
     $linksHeader = (isset($_SESSION['user']))
       ? array_filter(self::LINKS, fn ($k) => $k !== 'login', ARRAY_FILTER_USE_KEY)
       : [self::LINKS['login']];
-    $header = new Header($linksHeader);
+    $header = new Header($linksHeader, self::URL);
 
     $content = ($needSession)
       ? (isset($_SESSION['user']) ? $content : new Login(self::URL))
