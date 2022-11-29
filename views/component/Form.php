@@ -34,10 +34,10 @@ class Form extends ViewComponent
     string $extra
   ) {
 
-    $code = '<form action="' . $form["url"] . '" method="' . $form["method"] . '" class="form">';
+    $code = '<form action="' . $form["url"] . '" method="' . $form["method"] . '" class="form" enctype="multipart/form-data">';
     $code .= ($form["fieldset"]) ? '<fieldset>' : '';
     $code .= '<legend class="global-title">' . $form["legend"] . '</legend>';
-    $code .= '<input type="text" name="formname" id="formname" class="display-none" value="' . $form["name"] . '"/>';
+    $code .= '<input type="text" name="action" id="action" class="display-none" value="' . $form["name"] . '"/>';
     foreach ($inputs as $input) {
       switch ($input['component']) {
         case 'file':

@@ -11,9 +11,15 @@ class DBConnect
    */
   public static function getMysqlConnect(): mixed
   {
-    require_once './model/DB_MYSQL.php';
+    
 
-    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
+    $mysqli = new mysqli(
+      ENV::DATABASE_HOST,
+      ENV::DATABASE_USER,
+      ENV::DATABASE_PASSWORD,
+      ENV::DATABASE_NAME,
+      ENV::DATABASE_PORT
+    );
     if ($mysqli->connect_errno) {
       return false;
     }

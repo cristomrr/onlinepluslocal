@@ -39,12 +39,13 @@ class Search extends ViewComponent
 
     if (count($articles) !== 0) {
       foreach ($articles as $k => $v) {
-        $code .= Article::getPreview($v, false);
+        $code .= Article::getPreview($v, $v['like']);
       }
     } else {
       $code .= '<p class=zero-articles>No existen artículos</p>';
     }
 
+    $code .= '<div class=box-more-articles><button>Cargar más ...</button></div>';
     $code .= '</div></section>';
 
     parent::__construct($code);

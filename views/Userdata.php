@@ -7,13 +7,16 @@ class Userdata extends ViewComponent
    */
   private const INPUTS_ARTICLE = [
     ["id" => "name", "label" => " Nombre:", "type" => "text", "component" => "input"],
-    ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"],
+    ["id" => "price", "label" => " Precio:", "type" => "number", "component" => "input"],
+    ["id" => "description", "label" => " Descripción:", "options" => ["cols" => "20", "rows" => "10"], "component" => "textarea"],
     [
       "id" => "upfile",
-      "label" => "Escoge una imagen JPG o PNG para el artículo (Tamaño máximo 200Kb):",
+      "label" => "Imagen JPG o PNG del artículo (Tamaño máximo 200Kb):",
       "options" => "image/png, image/jpeg", "component" => "file"
     ],
   ];
+
+  // ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"],
 
   /**
    * Campos comunes de los registros Cliente y Vendedor y específicos de cada uno.

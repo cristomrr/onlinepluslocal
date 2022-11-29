@@ -17,8 +17,8 @@ class Footer extends ViewComponent
     $code = '<footer>
                     <div class="link">
                       <a href="/?page=' . $url['contact'] . '">Contacto</a>
-                      <a href="' . $url['privacy'] . '">Privacidad</a>
-                      <a href="' . './ ' . '">Cookies</a>
+                      <a href="' . 'javascript:;' . '">Privacidad</a>
+                      <a href="' . 'javascript:;' . '">Cookies</a>
                     </div>
                     <p>Todos los derechos reservados © OnlinePlusLocal 2022</p>
                   </footer>';

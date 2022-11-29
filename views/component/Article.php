@@ -21,7 +21,7 @@ class Article
    */
   public static function getPreview(array $data, bool $isLike): string
   {
-    $article = '<div class="card data-iduser='.$data["iduser"].'">
+    $article = '<div class="card data-idarticle='.$data["idarticle"].'">
                         <picture id="' . $data["idarticle"] . '">
                             <img src="' . $data["img"] . '" alt="Imagen del producto" />
                         </picture>
@@ -34,8 +34,8 @@ class Article
 
     //        TODO: realizar acción al pulsar para info del artículo y del botón de favorito
     $article .= ($isLike)
-      ? '<span class="material-symbols-outlined favorite like">favorite</span>'
-      : '<span class="material-symbols-outlined favorite">favorite</span>';
+      ? '<span class="material-symbols-outlined favorite like" data-idarticle='.$data["idarticle"].'>favorite</span>'
+      : '<span class="material-symbols-outlined favorite" data-idarticle='.$data["idarticle"].'>favorite</span>';
 
     $article .= '</p></div></div>';
 

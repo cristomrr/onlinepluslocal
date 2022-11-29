@@ -18,8 +18,7 @@ CREATE TABLE users(
     `address` VARCHAR ( 255 ),
     `city` VARCHAR ( 255 ),
     `province` VARCHAR ( 255 ),
-    `password` VARCHAR ( 255 ),
-    `active` INT DEFAULT 0
+    `password` VARCHAR ( 255 )
 ) engine = innodb CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
 -- Creamos la tabla de artículos (M->1)

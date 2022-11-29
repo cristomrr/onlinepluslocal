@@ -36,7 +36,7 @@ class Mail
     
           <main>
     
-            <h4 style='font-size: 1.4rem;'>¡Hola $user[username] !</h4>
+            <h4 style='font-size: 1.4rem;'>¡Hola $user[username]!</h4>
             <br>
     
             <p>
@@ -50,23 +50,6 @@ class Mail
     
             <p style='color: #104167;font-weight: bold;'>Cualquier sugerencia es bienvenida en onlinepluslocal@cmrr.es.
             </p>
-            <br>
-            <a href='https://onlinepluslocal.cmrr.es/index.php?activate=$user[id]'
-            style='background-color: #104167;
-                             border: none;
-                             color: #fff;
-                             font-size: 0.8rem;
-                             font-weight: 500;
-                             padding: 0.8rem 1.5rem;
-                             border-radius: 0.5rem;
-                             text-decoration: none;
-                             height: 2.5rem;
-                             width: 10.4rem;
-                             margin: 1rem;
-                             display: block;
-                             margin: 1rem auto;'
-            target='_blank'>VERIFICAR EMAIL
-         </a>
             <br>
           </main>
         </div>
