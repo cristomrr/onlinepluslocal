@@ -1,8 +1,14 @@
 "use strict";
 
-// BOTÓN CARGAR MÁS ARTÍCULOS
+// VER CONTACTO DE ARTÍCULO
 
+const $cards = document.querySelectorAll(`.articles .card`);
 
+$cards.forEach((card) => {
+  card.addEventListener(`click`, (e) => {
+    e.target.classList.toggle(`rotate`);
+  });
+});
 
 // COLOR DEL ICONO DE FAVORITOS:
 
@@ -16,12 +22,11 @@ $iconFavorites.forEach((icon) => {
     const idArticle = e.target.getAttribute(`data-idarticle`);
     const isLike = e.target.classList.contains(`like`);
 
-
     try {
-    const data = new FormData();
-    data.append("action", "change-favorites");
-    data.append("id", idArticle);
-    data.append("like", isLike);
+      const data = new FormData();
+      data.append("action", "change-favorites");
+      data.append("id", idArticle);
+      data.append("like", isLike);
       // const resp = await fetch(`https://onlinepluslocal.cmrr.es/index.php`, {
       const resp = await fetch(`./index.php`, {
         method: "POST",

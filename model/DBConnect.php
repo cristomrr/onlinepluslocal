@@ -11,7 +11,6 @@ class DBConnect
    */
   public static function getMysqlConnect(): mixed
   {
-    
 
     $mysqli = new mysqli(
       ENV::DATABASE_HOST,

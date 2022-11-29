@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Clase que crea la vista del buscador de artículos. Contiene:
- *  - Formulario de búsqueda
- *  - Resultados de artículos
+ * Clase que crea la vista del buscador de artículos favoritos.
  */
 class Favorite extends ViewComponent
 {

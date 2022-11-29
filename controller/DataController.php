@@ -4,6 +4,9 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
+/**
+ * Clase encargada de la manipulación de datos en el servidor, como login, registro, subida de archivos u obtención de datos
+ */
 class DataController
 {
 
@@ -23,12 +26,10 @@ class DataController
   /**
    * Acción al iniciar sesión un usuario registrado
    */
-  public function login()
+  public function login(): void
   {
     $user = (isset($_POST['email']) ? htmlentities(addslashes($_POST['email'])) : null);
     $password = (isset($_POST['password']) ? htmlentities(addslashes($_POST['password'])) : null);
-
-    // TODO: agregar comprobar cuenta activa
 
     if ($user && $password) {
       $dbResp = $this->db->checkUserLogin($user, $password);
@@ -46,14 +47,19 @@ class DataController
    *
    * @return void
    */
-  public function logout()
+  public function logout(): void
   {
     unset($_SESSION['user']);
     $this->vc->printView('home');
   }
 
 
-  public function updateUserdata()
+  /**
+   * Acción al modificar los datos de usuario en el formulario del perfil
+   *
+   * @return void
+   */
+  public function updateUserdata(): void
   {
     $resp = $this->db->updateUser(
       [
@@ -72,8 +78,10 @@ class DataController
 
   /**
    * Acción al registrarse nuevo usuario
+   * 
+   * @return void
    */
-  public function signup()
+  public function signup(): void
   {
     $user = [
       'type' => ($_POST['action'] === 'signup-seller') ? 'seller' : 'buyer',
@@ -104,7 +112,16 @@ class DataController
     }
   }
 
-  public function sendMail($messageHTML, $altMsg, $sendUser, $sendEmail)
+  /**
+   * Envia un email según los parámetros de entrada
+   *
+   * @param string $messageHTML Código HTML para ser enviado como mensaje de email
+   * @param string $altMsg Texto alternativo si el cliente de correo no puede mostrar HTML
+   * @param string $sendUser Nombre de usuario al que se envía el email
+   * @param string $sendEmail Dirección de email al que enviar
+   * @return void
+   */
+  public function sendMail(string $messageHTML, string $altMsg, string $sendUser, string $sendEmail): void
   {
     $mail = new PHPMailer(true);
     $mail->SMTPDebug = 0;   //Muestra las trazas del mail, 0 para ocultarla en producción
@@ -135,7 +152,12 @@ class DataController
   }
 
 
-  public function searchArticle()
+  /**
+   * Solicita al modelo los artículos filtrando los resultados según las opciones del usuario en el formulario
+   *
+   * @return array Colección de registros que coinciden con los filtros recibidos
+   */
+  public function searchArticle(): array
   {
     $filters = [
       'name' => $_POST['name'],
@@ -158,32 +180,46 @@ class DataController
   }
 
 
-  public function uploadArticle()
+  /**
+   * Método encargado de almacenar la imagen recibida en el formulario de nuevo artículo con los datos correspondientes
+   *
+   * @return void
+   */
+  public function uploadArticle(): void
   {
-    if (isset($_FILES['upfile'])) {
-      $idArticle = ($this->db->getLastIDArticle() + 1);
-      $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-      $path = "./assets/users/$_SESSION[user]/$idArticle.$extension";
-      if (move_uploaded_file($_FILES['upfile']['tmp_name'], $path)) {
-        $resp = $this->db->setArticle(
-          [
-            'id' => $idArticle,
-            'name' => $_POST['name'],
-            'img' => $path,
-            'description' => $_POST['description'],
-            'price' => $_POST['price'] . '$',
-            'iduser' => $_SESSION['user']
-          ]
-        );
-        echo 'Respuesta de la DB base de datos: ' . $resp;
-      } else {
-        echo 'no movido a carpeta';
+    try {
+
+      if (isset($_FILES['upfile'])) {
+        $idArticle = ($this->db->getLastIDArticle() + 1);
+        $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+        $path = "./assets/users/$_SESSION[user]/$idArticle.$extension";
+        if (move_uploaded_file($_FILES['upfile']['tmp_name'], $path)) {
+          $resp = $this->db->setArticle(
+            [
+              'id' => $idArticle,
+              'name' => $_POST['name'],
+              'img' => $path,
+              'description' => $_POST['description'],
+              'price' => $_POST['price'] . '$',
+              'iduser' => $_SESSION['user']
+            ]
+          );
+        } else {
+          echo 'no se ha podido mover la imagen a la carpeta';
+        }
       }
+    } catch (Exception $e) {
+      echo 'error al almacenar la imagen del artículo';
     }
   }
 
 
-  public function changeFavorites()
+  /**
+   * Agrega o elimina artículos favoritos a usuarios 
+   *
+   * @return void
+   */
+  public function changeFavorites(): void
   {
     if ($_POST['like'] === 'true') {
       $this->db->setUserFavorites(intval($_SESSION['user']), intval($_POST['id']));

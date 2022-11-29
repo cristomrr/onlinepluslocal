@@ -14,12 +14,6 @@ class Header extends ViewComponent
    *
    * @param string $logo Ruta a la imagen logo
    * @param array $linksHeader Enlaces con icono a crear con el orden de la posición del array.
-   *              - Opciones disponibles:
-   *                  favorite: Ruta a la vista de favoritos.
-   *                  login: Ruta a la vista de Login.
-   *                  logout: Ruta a la vista de Home.
-   *                  seller: Ruta a la vista de Userdata de vendedores.
-   *                  buyer: Ruta a la vista de Userdata de clientes.
    */
   public function __construct(array $linksHeader)
   {

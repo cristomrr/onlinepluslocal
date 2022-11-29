@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Clase encargada de la vista del perfil de usuario
+ */
 class Userdata extends ViewComponent
 {
   /**
@@ -16,7 +19,6 @@ class Userdata extends ViewComponent
     ],
   ];
 
-  // ["id" => "description", "label" => " Descripción:", "type" => "text", "component" => "input"],
 
   /**
    * Campos comunes de los registros Cliente y Vendedor y específicos de cada uno.
@@ -57,6 +59,7 @@ class Userdata extends ViewComponent
     if ($user['type'] === 'seller') {
       $code .= $this->getUpArticle($url['server']);
     }
+    $code .= $this->getHelpSection();
     $code .= $this->getUserdata($url['server'], $user);
     $code .= '</section>';
 
@@ -65,10 +68,10 @@ class Userdata extends ViewComponent
 
 
   /**
-   * Undocumented function
+   * Código HTML con un saludo
    *
-   * @param string $username
-   * @return string
+   * @param string $username nombre del usuario que inicio sesión
+   * @return string código HTML del componente
    */
   public function getGreeting(string $username): string
   {
@@ -80,7 +83,7 @@ class Userdata extends ViewComponent
 
 
   /**
-   * Formulario con los campos necesarios para subir un nuevo artúculo al servidor
+   * Formulario con los campos necesarios para subir un nuevo artículo al servidor
    *
    * @param string $urlServer Ruta del archivo del servidor al que se envía el formulario
    * @return string Código HTML con el formulario para ser agregado al documento
@@ -108,10 +111,26 @@ class Userdata extends ViewComponent
 
 
   /**
+   * Código HTML con mensaje y un enlace de ayuda para editar imágenes
+   *
+   * @return string código HTML del componente
+   */
+  public function getHelpSection():string
+  {
+    $code = '<div class=help-img-editor>
+               <h4>Si necesitas ayuda para reducir el tamaño o editar la imagen, te ofrecemos la siguiente página:</h4>
+               <a href="https://pixlr.com/es/suite/" target="_blank">Editor de imagen</a> 
+            </div>';
+
+    return $code;
+  }
+
+
+  /**
    * Formulario con los datos del usuario, para la visualización o edición
    *
    * @param string $urlServer Ruta del archivo del servidor al que se envía el formulario
-   * @param array $user 
+   * @param array $user colección con los datos del usuario
    * @return string Código HTML con el formulario para ser agregado al documento
    */
   private function getUserdata(string $urlServer, array $user): string

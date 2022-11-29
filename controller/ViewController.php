@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+/**
+ * Clase encargada del manejo de las vistas del sitio web
+ */
 class ViewController
 {
 
@@ -30,12 +33,12 @@ class ViewController
 
 
   /**
-   * Undocumented function
+   * Imprime la vista solicitada dependiendo del parámetro
    *
-   * @param string $page
+   * @param string $page Indica que vista cargar
    * @return void
    */
-  public function printView(string $page, array $articles = [], $options = [])
+  public function printView(string $page, array $articles = [], $options = []): void
   {
     $page = (isset($_SESSION['user']))
       ? $page
@@ -45,7 +48,7 @@ class ViewController
 
     match ($page) {
       'perfil' => $this->setPage(new Userdata(self::URL, $this->db->getUser($_SESSION['user'])), true),
-      'favoritos' => $this->setPage(new Favorite(self::URL, $this->db->getUserFavorites($_SESSION['user'])), true),
+      'favoritos' => $this->setPage(new Favorite(self::URL, $this->db->getUserFavorites(intval($_SESSION['user']))), true),
       'buscador' => $this->setPage(new Search(self::URL, $this->db->getAllArticlesMarkFavorites()), true),
       'resultado-busqueda' => $this->setPage(new Search(self::URL, $articles), true),
       'registro-cliente' => $this->setPage(new Signup(self::URL, 'buyer'), false),
@@ -61,7 +64,7 @@ class ViewController
    *
    * @param ViewComponent $content Contenido de la página (Main)
    */
-  private function setPage(ViewComponent $content, bool $needSession)
+  private function setPage(ViewComponent $content, bool $needSession): void
   {
     $head = new Head();
 

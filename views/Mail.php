@@ -2,7 +2,13 @@
 
 class Mail
 {
-  public static function getConfirmationHTML($user)
+  /**
+   * Email enviado para dar la bienvenida al usuario y confirmar que está registrado
+   *
+   * @param string $user nombre del usuario a ver en el mensaje
+   * @return string código HTML del mensaje
+   */
+  public static function getConfirmationHTML(string $user)
   {
     return "<!DOCTYPE html>
     <html lang='es'>

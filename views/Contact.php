@@ -17,7 +17,7 @@ class Contact extends ViewComponent
     ["id" => "msg", "label" => " Mensaje:", "options" => ["cols" => "30", "rows" => "10"], "component" => "textarea"]
   ];
 
-
+  
   /**
    * Constructor del contenido del la página Contacto
    *
