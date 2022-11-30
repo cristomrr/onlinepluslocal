@@ -58,8 +58,8 @@ class Userdata extends ViewComponent
     $code .= $this->getGreeting($user['username']);
     if ($user['type'] === 'seller') {
       $code .= $this->getUpArticle($url['server']);
+      $code .= $this->getHelpSection();
     }
-    $code .= $this->getHelpSection();
     $code .= $this->getUserdata($url['server'], $user);
     $code .= '</section>';
 

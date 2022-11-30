@@ -19,7 +19,7 @@ class ENV
   public const DATABASE_PORT = '';
 
   // Configuración servidor:
-  // public const DATABASE_USER = 'cristo';
-  // public const DATABASE_PASSWORD = 'cristo@666';
-  // public const DATABASE_PORT = 3306; 
+  // public const DATABASE_USER = '';
+  // public const DATABASE_PASSWORD = '';
+  // public const DATABASE_PORT = ; 
 }
