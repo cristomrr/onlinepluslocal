@@ -10,7 +10,7 @@ class ViewController
     'search' => ['href' => '/buscador', 'color' => 'white', 'title' => 'Buscador', 'text' => 'search'],
     'favorite' => ['href' => '/favoritos', 'color' => 'red', 'title' => 'Favoritos', 'text' => 'favorite'],
     'login' => ['href' => '/iniciar-sesion', 'color' => 'white', 'title' => 'Login', 'text' => 'login'],
-    'logout' => ['href' => './?action=logout', 'color' => 'white', 'title' => 'Logout', 'text' => 'logout'],
+    'logout' => ['href' => '/?action=logout', 'color' => 'white', 'title' => 'Logout', 'text' => 'logout'],
     'user' => ['href' => '/perfil', 'color' => 'white', 'title' => 'Perfil', 'text' => 'person'],
   ];
 
@@ -36,8 +36,9 @@ class ViewController
       'signup' => $this->setPage(new Signup($content['user'])),
       'contact' => $this->setPage(new Contact()),
       'login', 'out-session' => $this->setPage(new Login()),
-      'error' => $this->setPage(new Errors(ERROR_CODE::setError($content['code']))),
-      default => $this->setPage(new Home()),
+      'error' => $this->setPage(new Errors($content['type'])),
+      'home' => $this->setPage(new Home()),
+      default => exit(),
     };
   }
 
@@ -54,10 +55,6 @@ class ViewController
       ? array_filter(self::LINKS, fn ($k) => $k !== 'login', ARRAY_FILTER_USE_KEY)
       : [self::LINKS['login']];
     $header = new Header($linksHeader);
-
-    // $content = ($needSession)
-    //   ? (isset($_SESSION['user']) ? $content : new Login())
-    //   : $content;
 
     $footer = new Footer();
 

@@ -776,7 +776,7 @@ section.section-signup {
 
 .error-title {
   font-family: "Courier New", Courier, monospace;
-  background-color: rgb(231, 152, 152);
+  background-color: #fcbed1;
   padding: 0.5rem;
   text-align: center;
 }
@@ -787,12 +787,24 @@ section.section-signup {
   max-width: 400px;
 }
 
+.error-msg {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .error-msg p {
-  border: 0.1rem solid rgba(255, 0, 0, 0.479);
+  border: 0.1rem solid #f8627a;
   border-top-width: 1rem;
   max-width: 600px;
   text-align: center;
   padding: 0.5rem;
+}
+
+.error-msg .button-back {
+  padding: 0.1em 2em;
 }
 
 /* !SECTION: Página Error */

@@ -27,8 +27,7 @@ $iconFavorites.forEach((icon) => {
       data.append("action", "change-favorites");
       data.append("id", idArticle);
       data.append("like", isLike);
-      // const resp = await fetch(`https://onlinepluslocal.cmrr.es/index.php`, {
-      const resp = await fetch(`./index.php`, {
+       const resp = await fetch(`https://onlinepluslocal.cmrr.es/index.php`, {
         method: "POST",
         body: data,
       });

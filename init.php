@@ -3,7 +3,6 @@
 require_once 'server/vendor/autoload.php';
 
 require_once 'server/config/ENV.php';
-require_once 'server/config/ERROR_CODE.php';
 
 require_once 'server/model/DBConnect.php';
 require_once 'server/model/DBAction.php';

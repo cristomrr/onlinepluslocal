@@ -7,8 +7,6 @@
  */
 class ImgGirl extends ViewComponent
 {
-  private const IMG_GIRL = 'server/assets/img/girl.png';
-
   /**
    * Prepara el código del componente
    *
@@ -17,7 +15,7 @@ class ImgGirl extends ViewComponent
   public function __construct(string $text)
   {
     $code = '<div class="girl-box">
-                        <img class="imggirl" src="' . self::IMG_GIRL . '" alt="Mujer de compras dando un mensaje" />
+                        <img class="imggirl" src="' . ENV::IMG_GIRL . '" alt="Mujer de compras dando un mensaje" />
                           <foreignObject x="20" y="90" width="150" height="200" class="text">
                             <p xmlns="http://www.w3.org/1999/xhtml">' . $text . '</p>
                           </foreignObject>

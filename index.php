@@ -8,7 +8,7 @@ require_once 'init.php';
 if (isset($_POST['action'])) {
   match ($_POST['action']) {
     'login' => $dc->login(),
-    'search' => $vc->printView('search', $dc->getArticles('all')),
+    'search' => $dc->searchFilterArticle(),
     'signup-buyer', 'signup-seller' => $dc->signup(),
     'addarticle' => $dc->uploadArticle(),
     'userdata' => $dc->updateUserdata(),
@@ -31,11 +31,6 @@ if (isset($_GET['action'])) {
 }
 
 /**
- * Si no hay parámetros es porque se solicitó una vista, la carga según el parámetro de la URL
- * TODO: recordar hacer rutas amigables con .htaccess
+ * Si no hay envío de una acción cargamos la vista de inicio 
  */
-// $page = (isset($_GET['page']))
-//   ? strip_tags(trim($_GET['page']))
-//   : 'home';
-
 $vc->printView('home');

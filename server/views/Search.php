@@ -7,8 +7,8 @@ class Search extends ViewComponent
 {
   private const INPUTS_SEARCH = [
     ["id" => "name", "label" => " Producto:", "type" => "text", "component" => "input"],
-    ["id" => "province", "label" => " Provincia:", "type" => "text", "component" => "input"],
-    ["id" => "city", "label" => " Localidad:", "type" => "text", "component" => "input"]
+    ["id" => "city", "label" => " Localidad:", "type" => "text", "component" => "input"],
+    ["id" => "province", "label" => " Provincia:", "type" => "text", "component" => "input"]
   ];
 
 
@@ -42,7 +42,7 @@ class Search extends ViewComponent
       $code .= '<p class=zero-articles>No existen artículos</p>';
     }
 
-    $code .= '<div class=box-more-articles><button>Cargar más ...</button></div>';
+    // $code .= '<div class=box-more-articles><button>Cargar más ...</button></div>';
     $code .= '</div></section>';
 
     parent::__construct($code);

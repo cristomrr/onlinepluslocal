@@ -7,8 +7,6 @@
  */
 class Header extends ViewComponent
 {
-  private const LOGO = 'server/assets/img/logo.png';
-
   /**
    * Constructor del Header del sitio web
    *
@@ -19,7 +17,7 @@ class Header extends ViewComponent
     $code = '<header>
                     <div class="title-box">
                         <a href="' . ENV::serverURL() . '">
-                            <img class="logo" src=' . self::LOGO . ' alt="Logo y enlace a la página principal" />
+                            <img class="logo" src=' . ENV::LOGO . ' alt="Logo y enlace a la página principal" />
                         </a>
                         <h1>ONLINE plus LOCAL</h1>
                     </div>

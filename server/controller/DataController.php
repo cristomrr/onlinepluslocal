@@ -16,6 +16,7 @@ class DataController
    * @var mixed
    */
   private $db;
+  private $vc;
 
   /**
    * Prepara la clase obteniendo la conexión a la base de datos
@@ -23,6 +24,7 @@ class DataController
   public function __construct()
   {
     $this->db = new DBAction();
+    $this->vc = new ViewController();
   }
 
 
@@ -34,14 +36,12 @@ class DataController
     $user = (isset($_POST['email']) ? htmlentities(addslashes($_POST['email'])) : null);
     $password = (isset($_POST['password']) ? htmlentities(addslashes($_POST['password'])) : null);
 
-    if ($user && $password) {
-      $dbResp = $this->db->checkUserLogin($user, $password);
-      if ($dbResp) {
-        $_SESSION['user'] = $dbResp['id'];
-        header('location: ' . ENV::serverURL() . ENV::ROUTE['search']);
-      } else {
-        echo 'Usuario o contraseña incorrectos';
-      }
+    $dbResp = $this->db->checkUserLogin($user, $password);
+    if ($dbResp) {
+      $_SESSION['user'] = $dbResp['id'];
+      header('location: ' . ENV::serverURL() . ENV::ROUTE['search']);
+    } else {
+      $this->vc->printView('error', ['type' => 'login']);
     }
   }
 
@@ -76,6 +76,7 @@ class DataController
         'province' => $_POST['province'],
       ]
     );
+    header('location:' . ENV::serverURL() . ENV::ROUTE['userdata']);
   }
 
 
@@ -175,17 +176,15 @@ class DataController
     try {
       $mail->send();
     } catch (Exception $err) {
-      echo "Error al enviar el email. Info: {$mail->ErrorInfo}";
+      $this->vc->printView('error', ['type' => 'mail']);
     }
   }
 
 
   /**
    * Solicita al modelo los artículos filtrando los resultados según las opciones del usuario en el formulario
-   *
-   * @return array Colección de registros que coinciden con los filtros recibidos
    */
-  public function searchArticle(ViewController $vc): array
+  public function searchFilterArticle()
   {
     $filters = [
       'name' => $_POST['name'],
@@ -202,13 +201,11 @@ class DataController
     $sqlFilterWhere = ($sqlFilterWhere === 'WHERE') ? '' : $sqlFilterWhere;
 
     $resp = $this->db->getArticle($sqlFilterWhere);
-    $vc->printView('result-search', $resp);
-
-    return $resp;
+    $this->vc->printView('result-search', $resp);
   }
 
 
-  public function getArticles(string $filter): array
+  public function getArticles(string $filter, $data = []): array
   {
     $articles = match ($filter) {
       'all' => $this->db->getAllArticles(),
@@ -226,29 +223,25 @@ class DataController
    */
   public function uploadArticle(): void
   {
-    try {
-
-      if (isset($_FILES['upfile'])) {
-        $idArticle = ($this->db->getLastIDArticle() + 1);
-        $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
-        $path = "/assets/users/$_SESSION[user]/$idArticle.$extension";
-        if (move_uploaded_file($_FILES['upfile']['tmp_name'], $path)) {
-          $resp = $this->db->setArticle(
-            [
-              'id' => $idArticle,
-              'name' => $_POST['name'],
-              'img' => $path,
-              'description' => $_POST['description'],
-              'price' => $_POST['price'] . '$',
-              'iduser' => $_SESSION['user']
-            ]
-          );
-        } else {
-          echo 'no se ha podido mover la imagen a la carpeta';
-        }
+    if (isset($_FILES['upfile'])) {
+      $idArticle = ($this->db->getLastIDArticle() + 1);
+      $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
+      $path =  "/server/assets/users/$_SESSION[user]/$idArticle.$extension";
+      if (move_uploaded_file($_FILES['upfile']['tmp_name'], dirname(__FILE__,3) . $path)) {
+        $this->db->setArticle(
+          [
+            'id' => $idArticle,
+            'name' => $_POST['name'],
+            'img' => $path,
+            'description' => $_POST['description'],
+            'price' => $_POST['price'] . '$',
+            'iduser' => $_SESSION['user']
+          ]
+        );
+        header('location:' . ENV::serverURL() . ENV::ROUTE['userdata']);
+      } else {
+        $this->vc->printView('error', ['type' => 'server']);
       }
-    } catch (Exception $e) {
-      echo 'error al almacenar la imagen del artículo';
     }
   }
 
@@ -267,6 +260,12 @@ class DataController
     }
   }
 
+  /**
+   * Controla en las vitas que necesiten sesión el usuario si ha iniciado y 
+   * si no lo ha hecho lo redirecciona a la página de inicio de sesión
+   * 
+   * @return array
+   */
   public function needSession(): array
   {
     if (isset($_SESSION['user'])) {

@@ -33,7 +33,7 @@ class DBAction
 
 
   /**
-   * Obtiene el artículo que contenga el valor en el campo especificado por parámetro
+   * Obtiene el artículo que contenga el valor en el campo especificado por parámetro. Obteniendo los datos del artículo y del vendedor.
    *
    * @param string $filter parte de la sentencia sql que filtra artículos (WHERE, LIKE, ..)
    * @return array Se devuelve el valor en un array asociativo tipo ['id'=>valor]
