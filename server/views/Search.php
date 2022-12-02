@@ -26,7 +26,7 @@ class Search extends ViewComponent
                 ' . $imgGirl->getCode() . '
               </div>
               <div class="form-search">
-                ' . self::getForm(ENV::URL['server']) . '
+                ' . self::getForm(ENV::serverURL()) . '
               </div>
             </section>';
 

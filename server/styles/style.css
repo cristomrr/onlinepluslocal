@@ -303,7 +303,7 @@ header span:hover {
   pointer-events: all;
 
   position: relative;
-  transition: 2.5s;
+  transition: 1.5s;
   transform-style: preserve-3d;
 }
 

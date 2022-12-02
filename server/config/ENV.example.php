@@ -6,11 +6,11 @@
 class ENV
 {
   // EMAIL
-  public const EMAIL_ACCOUNT = "";
+  public const EMAIL_ACCOUNT = "onlinepluslocal@cmrr.es";
   public const EMAIL_PASSWORD = "";
 
   // DATABASE MARIADB
-  public const DATABASE_NAME = '';
+  public const DATABASE_NAME = 'onlinepluslocal';
   public const DATABASE_HOST = '';
 
   // Configuración local:
@@ -29,18 +29,28 @@ class ENV
   public const SALT_PASSWD = '';
 
   /**
-   * URL a cada página del sitio web
+   * Ruta a cada página del sitio web desde el directorio raíz
    */
-  public const URL = [
-    'server' => '',
-    'signup-seller' => '',
-    'signup-buyer' => '',
-    'contact' => '',
-    'privacy' => '',
+  public const ROUTE = [
+    'home' => '',
+    'login' => 'iniciar-sesion',
+    'signup-seller' => 'registro-empresa',
+    'signup-buyer' => 'registro-cliente',
+    'contact' => 'contacto',
+    'search' => '/buscador',
+    'favorites' => 'favoritos',
+    'userdata' => 'perfil',
   ];
 
   /**
-   * Sitios que serán accesibles si se ha iniciado sesión
+   * Genera la URL del servidor con el protocolo. Pudiendo ser: 
+   * https://onlinepluslocal.cmrr.es o la de localhost con el puerto para desarrollo
+   * @return string URL completa
    */
-  public const PAGES_NEED_SESSION = ['', '', '', ''];
+  public static function serverURL()
+  {
+    return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+      ? "https://" . $_SERVER['HTTP_HOST']
+      : "http://" . $_SERVER['HTTP_HOST'];
+  }
 }

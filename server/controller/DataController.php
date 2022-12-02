@@ -4,14 +4,22 @@ use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
+
 /**
  * Clase encargada de la manipulación de datos en el servidor, como login, registro, subida de archivos u obtención de datos
  */
 class DataController
 {
 
+  /**
+   * Almacena la conexión a la base de datos
+   * @var mixed
+   */
   private $db;
 
+  /**
+   * Prepara la clase obteniendo la conexión a la base de datos
+   */
   public function __construct()
   {
     $this->db = new DBAction();
@@ -30,9 +38,7 @@ class DataController
       $dbResp = $this->db->checkUserLogin($user, $password);
       if ($dbResp) {
         $_SESSION['user'] = $dbResp['id'];
-        // TODO: MODIFICAR RUTA AL SERVIDOR EN PRODUCCIÓN
-        // header('location: https://onlinepluslocal.es/buscador');
-        header('location: http://localhost:3000/buscador');
+        header('location: ' . ENV::serverURL() . ENV::ROUTE['search']);
       } else {
         echo 'Usuario o contraseña incorrectos';
       }
@@ -47,9 +53,7 @@ class DataController
   public function logout(): void
   {
     unset($_SESSION['user']);
-    // TODO: MODIFICAR RUTA AL SERVIDOR EN PRODUCCIÓN
-    // header('location: https://onlinepluslocal.es');
-    header('location: http://localhost:3000');
+    header('location: ' . ENV::serverURL());
   }
 
 
@@ -98,7 +102,7 @@ class DataController
       echo 'Respuesta del servidor: Ya existe un usuario con ese email';
     } else {
       if ($this->db->setUser($user)) {
-        require_once './views/Mail.php';
+        // require_once './views/Mail.php';
         $lastUser = $this->db->getUser('LAST_INSERT_ID()');
         $messageHTML = Mail::getConfirmationHTML($lastUser);
         $altMsg = "¡Hola $lastUser[username]. Bienvenid@ a OnlinePlusLocal. 
@@ -106,16 +110,14 @@ class DataController
         Cualquier sugerencia es bienvenida en onlinepluslocal@cmrr.es.";
 
         $this->sendMail($messageHTML, $altMsg, $lastUser['username'], $lastUser['email'], 'Mensaje de bienvenida');
-        // TODO: MODIFICAR RUTA AL SERVIDOR EN PRODUCCIÓN
-        // header('location: https://onlinepluslocal.es/iniciar-sesion');
-        header('location: http://localhost:3000/iniciar-sesion');
+        header('location: ' . ENV::serverURL() . ENV::ROUTE['login']);
       }
     }
   }
 
 
   /**
-   * Envía mensaje a la bandeja de entrada al recibir el formulario de contacto
+   * Envía mensaje el formulario de contacto al correo electrónico especificado
    *
    * @return void
    */
@@ -134,12 +136,8 @@ class DataController
             </html>';
 
     $altMsg = "Contacto $_POST[email]:  $_POST[msg]";
-
     $this->sendMail($doc, $altMsg, 'Contacto', 'onlinepluslocal@cmrr.es', 'Mensaje de Contacto');
-
-    // TODO: MODIFICAR RUTA AL SERVIDOR EN PRODUCCIÓN
-    // header('location: https://onlinepluslocal.es/contacto');
-    header('location: http://localhost:3000/contacto');
+    header('location: ' . ENV::serverURL() . ENV::ROUTE['contact']);
   }
 
   /**
@@ -256,7 +254,7 @@ class DataController
 
 
   /**
-   * Agrega o elimina artículos favoritos a usuarios 
+   * Agrega o elimina artículos favoritos al usuario que ha iniciado sesión 
    *
    * @return void
    */
@@ -266,6 +264,16 @@ class DataController
       $this->db->setUserFavorites(intval($_SESSION['user']), intval($_POST['id']));
     } else {
       $this->db->deleteUserFavorites(intval($_SESSION['user']), intval($_POST['id']));
+    }
+  }
+
+  public function needSession(): array
+  {
+    if (isset($_SESSION['user'])) {
+      return $this->db->getUser($_SESSION['user']);
+    } else {
+      header('location:' . ENV::serverURL() . ENV::ROUTE['login']);
+      die();
     }
   }
 }

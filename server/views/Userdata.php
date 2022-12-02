@@ -56,10 +56,10 @@ class Userdata extends ViewComponent
     $code = '<section class="section-userdata">';
     $code .= $this->getGreeting($user['username']);
     if ($user['type'] === 'seller') {
-      $code .= $this->getUpArticle(ENV::URL['server']);
+      $code .= $this->getUpArticle(ENV::serverURL());
       $code .= $this->getHelpSection();
     }
-    $code .= $this->getUserdata(ENV::URL['server'], $user);
+    $code .= $this->getUserdata(ENV::serverURL(), $user);
     $code .= '</section>';
 
     parent::__construct($code);
@@ -114,7 +114,7 @@ class Userdata extends ViewComponent
    *
    * @return string código HTML del componente
    */
-  public function getHelpSection():string
+  public function getHelpSection(): string
   {
     $code = '<div class=help-img-editor>
                <h4>Si necesitas ayuda para reducir el tamaño o editar la imagen, te ofrecemos la siguiente página:</h4>

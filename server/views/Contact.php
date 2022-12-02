@@ -37,7 +37,7 @@ class Contact extends ViewComponent
                       </div>
                       <div class="form-box">
                         <div class="form-content">
-                          ' . $this->getForm(ENV::URL['server']) . '
+                          ' . $this->getForm(ENV::serverURL()) . '
                         </div>
                       </div>
                     </section>';

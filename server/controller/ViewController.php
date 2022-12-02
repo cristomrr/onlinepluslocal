@@ -14,38 +14,30 @@ class ViewController
     'user' => ['href' => '/perfil', 'color' => 'white', 'title' => 'Perfil', 'text' => 'person'],
   ];
 
-  private $db;
-
   public function __construct()
   {
-    $this->db = new DBAction();
   }
 
 
   /**
    * Imprime la vista solicitada dependiendo del parámetro
    *
-   * @param string $page Indica que vista cargar
+   * @param string $page Indica que vista cargar, en caso de no existir cargará la de inicio
+   * @param array $content Datos de contenido para cada vista, pudiendo ser artículos o datos del usuario entre otros
    * @return void
    */
   public function printView(string $page, array $content = []): void
   {
-    $page = (isset($_SESSION['user']))
-      ? $page
-      : (!in_array($page, ENV::PAGES_NEED_SESSION)
-        ? $page
-        : 'login');
-
     match ($page) {
-      'data-user' => $this->setPage(new Userdata($this->db->getUser($_SESSION['user'])), true),
-      'favorites' => $this->setPage(new Favorite($content), true),
-      'search' => $this->setPage(new Search($content), true),
-      'result-search' => $this->setPage(new Search($content), true),
-      'signup' => $this->setPage(new Signup($content['user']), false),
-      'contact' => $this->setPage(new Contact(), false),
-      'login', 'out-session' => $this->setPage(new Login(), false),
-      'error' => $this->setPage(new Errors(ERROR_CODE::setError(ERROR_CODE::CONNECT_DB)), false),
-      default => $this->setPage(new Home(), false),
+      'userdata' => $this->setPage(new Userdata($content)),
+      'favorites' => $this->setPage(new Favorite($content)),
+      'search' => $this->setPage(new Search($content)),
+      'result-search' => $this->setPage(new Search($content)),
+      'signup' => $this->setPage(new Signup($content['user'])),
+      'contact' => $this->setPage(new Contact()),
+      'login', 'out-session' => $this->setPage(new Login()),
+      'error' => $this->setPage(new Errors(ERROR_CODE::setError($content['code']))),
+      default => $this->setPage(new Home()),
     };
   }
 
@@ -54,7 +46,7 @@ class ViewController
    *
    * @param ViewComponent $content Contenido de la página (Main)
    */
-  private function setPage(ViewComponent $content, bool $needSession): void
+  private function setPage(ViewComponent $content): void
   {
     $head = new Head();
 
@@ -63,9 +55,9 @@ class ViewController
       : [self::LINKS['login']];
     $header = new Header($linksHeader);
 
-    $content = ($needSession)
-      ? (isset($_SESSION['user']) ? $content : new Login())
-      : $content;
+    // $content = ($needSession)
+    //   ? (isset($_SESSION['user']) ? $content : new Login())
+    //   : $content;
 
     $footer = new Footer();
 

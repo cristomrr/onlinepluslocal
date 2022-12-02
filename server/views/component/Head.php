@@ -15,13 +15,13 @@ class Head extends ViewComponent
   {
     $code = '<head>
                     <meta charset="UTF-8" />
-                    <link rel="shortcut icon" type="image/x-icon" href="server/assets/favicon.ico">
+                    <link rel="shortcut icon" type="image/x-icon" href="' . ENV::serverURL() . '/server/assets/favicon.ico">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                     <title>OnlinePlusLocal</title>
 
                     <!-- styles -->
                     
-                    <link rel="stylesheet" href="server/styles/style.css">
+                    <link rel="stylesheet" href="' . ENV::serverURL() . '/server/styles/style.css">
 
                     <!-- google fonts -->
                     
@@ -39,7 +39,7 @@ class Head extends ViewComponent
                     
                     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-                    <script defer src="server/scripts/script.js"></script>
+                    <script defer src="' . ENV::serverURL() . '/server/scripts/script.js"></script>
                 </head>';
 
     parent::__construct($code);

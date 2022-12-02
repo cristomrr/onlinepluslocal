@@ -14,7 +14,7 @@ class Footer extends ViewComponent
   {
     $code = '<footer>
                     <div class="link">
-                      <a href="' . ENV::URL['server'] . ENV::URL['contact'] . '">Contacto</a>
+                      <a href="' . ENV::serverURL() . ENV::ROUTE['contact'] . '">Contacto</a>
                       <a href="' . 'javascript:;' . '">Privacidad</a>
                       <a href="' . 'javascript:;' . '">Cookies</a>
                     </div>

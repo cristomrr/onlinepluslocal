@@ -87,7 +87,7 @@ class DBAction
 
 
   /**
-   * Undocumented function
+   * Obtiene los datos de los artículos favoritos del usuario con el id pasado por parámetro
    *
    * @param int $idUser id del usuario del que se quiere obtener los favoritos
    * @return array Colección con los datos de los favoritos del usuario
@@ -106,7 +106,7 @@ class DBAction
 
 
   /**
-   * Obtiene los id de los artículos favoritos del usuario
+   * Obtiene solo los ids de los artículos favoritos del usuario en una sola colección
    *
    * @param int $idUser id del usuario
    * @return array Colección de id de favoritos
@@ -176,7 +176,7 @@ class DBAction
    *
    * @param string $email email del usuario que inicia sesión
    * @param string $passw password del ususario sin encriptar
-   * @return mixed
+   * @return mixed Devuelve el id del usuario si existe o FALSE
    */
   public function checkUserLogin(string $email, string $passw): mixed
   {
@@ -191,7 +191,7 @@ class DBAction
    * almacena un nuevo usuario en la base de datos
    *
    * @param array $v Objeto con los datos del usuario
-   * @return bool TRUE|FALSE si se existe o no
+   * @return bool TRUE|FALSE si almacenó o no
    */
   public function setUser(array $v): bool
   {
@@ -222,7 +222,7 @@ class DBAction
   /**
    * Actualiza los datos de un usuario
    *
-   * @param array $v datos del usuario en un array asociativo
+   * @param array $v datos a almacenar del usuario en un array asociativo
    * @return bool TRUE|FALSE si se completo la consulta
    */
   public function updateUser(array $v): bool

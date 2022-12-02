@@ -19,15 +19,15 @@ class Login extends ViewComponent
   {
     $code =  '<section class="section-login">
               <div class="form-login">
-              ' . $this->getForm(ENV::URL['server']) . '
+              ' . $this->getForm(ENV::serverURL()) . '
               </div>
 
               <p>¿No tienes una cuenta?</p>
 
               <div class="login-btn">
-                <a href="' . ENV::URL['server'] . '' . ENV::URL['signup-buyer'] . '">Crear cuenta de cliente</a>
+                <a href="' . ENV::serverURL() . '' . ENV::ROUTE['signup-buyer'] . '">Crear cuenta de cliente</a>
                 <p>ó</p>
-                <a href="' . ENV::URL['server'] . '' . ENV::URL['signup-seller'] . '">Crear cuenta de empresa</a>
+                <a href="' . ENV::serverURL() . '' . ENV::ROUTE['signup-seller'] . '">Crear cuenta de empresa</a>
               </div>
             </section>';
 

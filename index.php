@@ -7,13 +7,13 @@ require_once 'init.php';
  */
 if (isset($_POST['action'])) {
   match ($_POST['action']) {
-    'login' => $dc->login($vc),
+    'login' => $dc->login(),
     'search' => $vc->printView('search', $dc->getArticles('all')),
-    'signup-buyer', 'signup-seller' => $dc->signup($vc),
+    'signup-buyer', 'signup-seller' => $dc->signup(),
     'addarticle' => $dc->uploadArticle(),
     'userdata' => $dc->updateUserdata(),
     'change-favorites' => $dc->changeFavorites(),
-    'contact' => $dc->contact($vc),
+    'contact' => $dc->contact(),
     default => '',
   };
   exit();
@@ -21,12 +21,10 @@ if (isset($_POST['action'])) {
 
 /**
  * Obtiene los parámetros pasados por la URL, se usa con el icono de cerrar sesión
- * TODO: MODIFICAR RUTA AL SERVIDOR EN PRODUCCIÓN
  */
 if (isset($_GET['action'])) {
   match ($_GET['action']) {
-    // 'logout' => header('location: https://onlinepluslocal.es'),
-    'logout' => header('location: http://localhost:3000'),
+    'logout' => $dc->logout(),
     default => '',
   };
   exit();
@@ -41,6 +39,3 @@ if (isset($_GET['action'])) {
 //   : 'home';
 
 $vc->printView('home');
-// match($page) {
-//   'contact'=> 
-// }

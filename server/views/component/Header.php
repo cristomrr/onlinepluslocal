@@ -18,7 +18,7 @@ class Header extends ViewComponent
   {
     $code = '<header>
                     <div class="title-box">
-                        <a href="'.ENV::URL['server'].'">
+                        <a href="' . ENV::serverURL() . '">
                             <img class="logo" src=' . self::LOGO . ' alt="Logo y enlace a la página principal" />
                         </a>
                         <h1>ONLINE plus LOCAL</h1>

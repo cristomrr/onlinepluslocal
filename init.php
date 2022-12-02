@@ -18,6 +18,7 @@ require_once 'server/views/component/Form.php';
 require_once 'server/views/component/ImgGirl.php';
 require_once 'server/views/component/Article.php';
 
+require_once 'server/views/Mail.php';
 require_once 'server/views/Errors.php';
 require_once 'server/views/Home.php';
 require_once 'server/views/Contact.php';

@@ -65,9 +65,9 @@ class Signup extends ViewComponent
 
     $code = '<section class="section-signup">
                     <div class="form-box">';
-    $code .= self::getForm(ENV::URL['server'], $user, $inputs) .
+    $code .= self::getForm(ENV::serverURL(), $user, $inputs) .
       '</div>';
-    $code .= self::getInfo($user, ENV::URL['signup-seller'], ENV::URL['signup-buyer']);
+    $code .= self::getInfo($user);
     $code .= '</section>';
 
     parent::__construct($code);
@@ -110,15 +110,23 @@ class Signup extends ViewComponent
    * @param string $user Tipo de usuario. Opciones disponibles:
    *                "buyer": para información al Cliente
    *                "seller": para información al Vendedor
-   * @param string $urlBuyer Enlace a la página de registro de clientes
-   * @param string $urlBuyer Enlace a la página de registro de vendedores
    * @return string Código HTML con la sección informativa lista para ser agregada al documento
    */
-  private function getInfo(string $user, string $urlBuyer, string $urlSeller): string
+  private function getInfo(string $user): string
   {
     $optioninfo = match ($user) {
-      "buyer" => ['title' => "¿Eres vendedor?...", "label" => "Regístrate aquí como empresa", "href" => "/?page=$urlBuyer"],
-      "seller" => ["title" => "¿Eres cliente?...", "label" => "Regístrate aquí como cliente", "href" => "/?page=$urlSeller"],
+      "buyer" =>
+      [
+        'title' => "¿Eres vendedor?...",
+        "label" => "Regístrate aquí como empresa",
+        "href" => ENV::serverURL() . ENV::ROUTE['signup-seller']
+      ],
+      "seller" =>
+      [
+        "title" => "¿Eres cliente?...",
+        "label" => "Regístrate aquí como cliente",
+        "href" => ENV::serverURL() . ENV::ROUTE['signup-buyer']
+      ],
     };
 
     $info = '<div class="info-box">
