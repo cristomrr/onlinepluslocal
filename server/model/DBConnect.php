@@ -1,7 +1,5 @@
 <?php
 
-use PHPMailer\PHPMailer\Exception;
-
 class DBConnect
 {
   /**

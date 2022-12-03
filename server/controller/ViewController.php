@@ -23,7 +23,7 @@ class ViewController
    * Imprime la vista solicitada dependiendo del parámetro
    *
    * @param string $page Indica que vista cargar, en caso de no existir cargará la de inicio
-   * @param array $content Datos de contenido para cada vista, pudiendo ser artículos o datos del usuario entre otros
+   * @param array $content Datos de contenido para cada vista
    * @return void
    */
   public function printView(string $page, array $content = []): void
@@ -32,7 +32,6 @@ class ViewController
       'userdata' => $this->setPage(new Userdata($content)),
       'favorites' => $this->setPage(new Favorite($content)),
       'search' => $this->setPage(new Search($content)),
-      'result-search' => $this->setPage(new Search($content)),
       'signup' => $this->setPage(new Signup($content['user'])),
       'contact' => $this->setPage(new Contact()),
       'login', 'out-session' => $this->setPage(new Login()),
@@ -43,7 +42,8 @@ class ViewController
   }
 
   /**
-   * Crea e imprime en el navegador la página agregando las vistas pasadas por parámetro al documento
+   * Crea e imprime en el navegador la página agregando las vistas`
+   *  pasadas por parámetro al documento
    *
    * @param ViewComponent $content Contenido de la página (Main)
    */

@@ -201,7 +201,7 @@ class DataController
     $sqlFilterWhere = ($sqlFilterWhere === 'WHERE') ? '' : $sqlFilterWhere;
 
     $resp = $this->db->getArticle($sqlFilterWhere);
-    $this->vc->printView('result-search', $resp);
+    $this->vc->printView('search', $resp);
   }
 
 
@@ -227,7 +227,7 @@ class DataController
       $idArticle = ($this->db->getLastIDArticle() + 1);
       $extension =  pathinfo($_FILES['upfile']['name'], PATHINFO_EXTENSION);
       $path =  "/server/assets/users/$_SESSION[user]/$idArticle.$extension";
-      if (move_uploaded_file($_FILES['upfile']['tmp_name'], dirname(__FILE__,3) . $path)) {
+      if (move_uploaded_file($_FILES['upfile']['tmp_name'], dirname(__FILE__, 3) . $path)) {
         $this->db->setArticle(
           [
             'id' => $idArticle,
