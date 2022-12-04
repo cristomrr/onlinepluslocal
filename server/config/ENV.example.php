@@ -1,17 +1,23 @@
 <?php
 
 /**
- * Clase encargada de almacenar las variables con información sensible, para no ser envíada al repositorio
+ *  Clase encargada de almacenar las variables con información sensible, para no
+ * ser enviada al repositorio o contenido utilizado en varias partes del proyecto
+ * como imágenes. El archivo original debe ser ENV.php y nombre de la clase ENV
  */
-class ENV
+class ENV_Example
 {
+  // RUTAS A IMÁGENES
+  public const LOGO = '../server/assets/img/logo.png';
+  public const IMG_GIRL = '../server/assets/img/girl.png';
+
   // EMAIL
   public const EMAIL_ACCOUNT = "onlinepluslocal@cmrr.es";
   public const EMAIL_PASSWORD = "";
 
   // DATABASE MARIADB
   public const DATABASE_NAME = 'onlinepluslocal';
-  public const DATABASE_HOST = '';
+  public const DATABASE_HOST = '127.0.0.1';
 
   // Configuración local:
   public const DATABASE_USER = '';
@@ -33,17 +39,17 @@ class ENV
    */
   public const ROUTE = [
     'home' => '',
-    'login' => 'iniciar-sesion',
-    'signup-seller' => 'registro-empresa',
-    'signup-buyer' => 'registro-cliente',
-    'contact' => 'contacto',
+    'login' => '/iniciar-sesion',
+    'signup-seller' => '/registro-empresa',
+    'signup-buyer' => '/registro-cliente',
+    'contact' => '/contacto',
     'search' => '/buscador',
-    'favorites' => 'favoritos',
-    'userdata' => 'perfil',
+    'favorites' => '/favoritos',
+    'userdata' => '/perfil',
   ];
 
   /**
-   * Genera la URL del servidor con el protocolo. Pudiendo ser: 
+   * Genera la URL del servidor donde está cargado el proyecto con el protocolo. Pudiendo ser: 
    * https://onlinepluslocal.cmrr.es o la de localhost con el puerto para desarrollo
    * @return string URL completa
    */

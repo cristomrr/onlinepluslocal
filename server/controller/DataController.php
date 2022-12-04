@@ -107,7 +107,8 @@ class DataController
         $lastUser = $this->db->getUser('LAST_INSERT_ID()');
         $messageHTML = Mail::getConfirmationHTML($lastUser);
         $altMsg = "¡Hola $lastUser[username]. Bienvenid@ a OnlinePlusLocal. 
-        Estamos muy agradecidos de que hayas decidido probar nuestra plataforma para buscar productos de forma diferente a lo que se hace hoy en día, ¡ahora podrás encontrar cosas cerca de casa!.
+        Estamos muy agradecidos de que hayas decidido probar nuestra plataforma para buscar productos
+         de forma diferente a lo que se hace hoy en día, ¡ahora podrás encontrar cosas cerca de casa!.
         Cualquier sugerencia es bienvenida en onlinepluslocal@cmrr.es.";
 
         $this->sendMail($messageHTML, $altMsg, $lastUser['username'], $lastUser['email'], 'Mensaje de bienvenida');
@@ -150,8 +151,13 @@ class DataController
    * @param string $sendEmail Dirección de email al que enviar
    * @return void
    */
-  public function sendMail(string $messageHTML, string $altMsg, string $sendUser, string $sendEmail, string $subject): void
-  {
+  public function sendMail(
+    string $messageHTML,
+    string $altMsg,
+    string $sendUser,
+    string $sendEmail,
+    string $subject
+  ): void {
     $mail = new PHPMailer(true);
     $mail->SMTPDebug = 0;   //Muestra las trazas del mail, 0 para ocultarla en producción
 
@@ -217,7 +223,8 @@ class DataController
 
 
   /**
-   * Método encargado de almacenar la imagen recibida en el formulario de nuevo artículo con los datos correspondientes
+   * Método encargado de almacenar la imagen recibida en el formulario de
+   *  nuevo artículo con los datos correspondientes
    *
    * @return void
    */

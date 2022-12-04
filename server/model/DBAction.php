@@ -172,7 +172,8 @@ class DBAction
 
 
   /**
-   * Comprueba los datos del login con los de la base de datos, a ver si las credenciales son correctas
+   * Comprueba los datos del login con los de la base de datos,
+   *  a ver si las credenciales son correctas
    *
    * @param string $email email del usuario que inicia sesión
    * @param string $passw password del ususario sin encriptar
@@ -199,7 +200,8 @@ class DBAction
 
     $sql = "INSERT INTO 
     users (id, username, document, type, phone, email, address, city, province, password)
-    VALUES ( null, '$v[name]', '$v[document]', '$v[type]', '$v[phone]', '$v[email]', '$v[address]', '$v[city]', '$v[province]', '$password')";
+    VALUES ( null, '$v[name]', '$v[document]', '$v[type]', '$v[phone]', '$v[email]', 
+    '$v[address]', '$v[city]', '$v[province]', '$password')";
 
     return $this->db->query($sql);
   }
